@@ -1,0 +1,4 @@
+content/data/                 ← Base de données
+content/themes/README.md       ← Fichier par défaut de Ghost
+ghost.db                       ← Base SQLite
+*.log                          ← Fichiers de log
