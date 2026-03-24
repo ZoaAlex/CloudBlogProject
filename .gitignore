@@ -28,3 +28,6 @@ content/themes/casper
 
 # Fichiers de configuration locaux
 config.*.json
+
+# fichier d'environnement
+.env
