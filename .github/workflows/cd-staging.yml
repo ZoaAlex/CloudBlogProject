@@ -1,0 +1,49 @@
+﻿
+name: CD - Deploy Staging (develop)
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    environment: staging
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            set -e
+            cd ${{ secrets.STAGING_DEPLOY_PATH }}
+            git fetch origin develop
+            git checkout develop
+            git pull origin develop
+            NODE_ENV=development docker compose up -d --remove-orphans
+            docker image prune -f
+            echo "Staging deploye sur develop"
+
+      - name: Health check staging
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            sleep 8
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:2368)
+            echo "Ghost staging HTTP status: $STATUS"
+            if [ "$STATUS" -ne 200 ] && [ "$STATUS" -ne 301 ] && [ "$STATUS" -ne 302 ]; then
+              echo "Health check echoue"
+              exit 1
+            fi
