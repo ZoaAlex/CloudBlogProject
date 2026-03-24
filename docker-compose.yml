@@ -6,5 +6,14 @@ services:
     restart: unless-stopped
     ports:
       - "2368:2368"
+
+    environment:
+      database__client: sqlite3
+      database__connection__filename: /var/lib/ghost/content/data/ghost.db
+      # URL de base
+      url: http://localhost:2368
+      # Met en développement pour éviter les cache
+      NODE_ENV: development
     volumes:
-      - ./content:/var/lib/ghost/content
+      - ./content/themes/mon-theme:/var/lib/ghost/content/themes/mon-theme
+      - ./content/data:/var/lib/ghost/content/data

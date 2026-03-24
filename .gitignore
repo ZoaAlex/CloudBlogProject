@@ -1,4 +1,33 @@
-content/data/                 ← Base de données
-content/themes/README.md       ← Fichier par défaut de Ghost
-ghost.db                       ← Base SQLite
-*.log                          ← Fichiers de log
+# Ignorer les dossiers système de Ghost
+content/data/
+content/logs/
+content/images/
+content/adapters/
+content/settings/
+
+# Ignorer les thèmes par défaut (liens symboliques)
+content/themes/casper
+content/themes/source
+content/themes/casper/
+content/themes/source/
+
+# Ignorer le thème par défaut (lien symbolique)
+content/themes/casper
+
+# Garder ton thème
+!content/themes/
+!content/themes/mon-theme/
+
+# Fichiers de log
+*.log
+
+# Fichiers de base de données
+*.db
+*.db-shm
+*.db-wal
+
+# Fichiers de configuration locaux
+config.*.json
+
+# fichier d'environnement
+.env
