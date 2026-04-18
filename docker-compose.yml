@@ -3,7 +3,7 @@ services:
   blog:
     image: ghost:5-alpine
     container_name: ghost
-    restart: unless-stopped
+    restart: always
     ports:
       - "2368:2368"
 
