@@ -1,4 +1,4 @@
-
+# gosht service
 services:
   blog:
     image: ghost:5-alpine
