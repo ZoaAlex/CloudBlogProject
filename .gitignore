@@ -11,8 +11,6 @@ content/themes/source
 content/themes/casper/
 content/themes/source/
 
-# Ignorer le thème par défaut (lien symbolique)
-content/themes/casper
 
 # Garder ton thème
 !content/themes/
