@@ -1,0 +1,47 @@
+{{!-- partials/navigation.hbs --}}
+<nav class="site-nav" role="navigation" aria-label="Navigation principale">
+  <a href="{{@site.url}}" class="site-nav__logo" aria-label="{{@site.title}} — Accueil">
+    {{#if @site.logo}}
+      <img src="{{@site.logo}}" alt="{{@site.title}}" />
+    {{else}}
+      <span>{{@site.title}}</span>
+    {{/if}}
+  </a>
+
+  <ul class="site-nav__list" id="nav-menu" role="list">
+    {{#foreach @site.navigation}}
+      <li><a href="{{url}}" {{#if current}}aria-current="page"{{/if}}>{{label}}</a></li>
+    {{/foreach}}
+  </ul>
+
+  <div class="site-nav__search">
+    <button data-search-trigger aria-label="Rechercher">
+      ⚔ Rechercher
+    </button>
+  </div>
+
+  <button class="nav-toggle" aria-controls="nav-menu" aria-expanded="false" aria-label="Ouvrir le menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+{{!-- Search Overlay --}}
+<div class="search-overlay" role="search" aria-label="Recherche globale">
+  <div class="search-overlay__inner">
+    <div class="ornament" aria-hidden="true">
+      <span class="ornament-icon">⚓</span>
+    </div>
+    <input
+      class="search-overlay__input"
+      type="search"
+      placeholder="Chercher un arc, un personnage, une île…"
+      aria-label="Recherche"
+    />
+    <p style="text-align:center; margin-top:1rem; font-size:0.75rem; font-family:'Cinzel',serif; letter-spacing:0.1em; color:rgba(245,234,216,0.35);">
+      Appuyez sur <kbd style="background:rgba(201,146,42,0.15); border:1px solid rgba(201,146,42,0.3); padding:0.1em 0.4em; border-radius:3px;">ESC</kbd> pour fermer
+    </p>
+  </div>
+  <button class="search-overlay__close" aria-label="Fermer la recherche">✕</button>
+</div>

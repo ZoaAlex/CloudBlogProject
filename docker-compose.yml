@@ -10,10 +10,11 @@ services:
     environment:
       database__client: sqlite3
       database__connection__filename: /var/lib/ghost/content/data/ghost.db
-      # URL de base
       url: http://localhost:2368
-      # Met en développement pour éviter les cache
       NODE_ENV: development
+      # Active le thème grand-line comme thème par défaut
+      activeTheme: grand-line-theme
     volumes:
-      - ./content/themes/mon-theme:/var/lib/ghost/content/themes/mon-theme
+      - ./content/themes/grand-line-theme:/var/lib/ghost/content/themes/grand-line-theme
       - ./content/data:/var/lib/ghost/content/data
+      - ./content/settings/routes.yaml:/var/lib/ghost/content/settings/routes.yaml

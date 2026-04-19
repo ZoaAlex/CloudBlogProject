@@ -1,0 +1,58 @@
+{{!-- page.hbs — Static page template --}}
+{{!< default}}
+
+<div style="padding-top: 100px;">
+
+  {{!-- Page Hero --}}
+  <header style="
+    text-align: center;
+    padding: var(--space-xl) var(--space-md) var(--space-lg);
+    position: relative;
+    overflow: hidden;
+  ">
+    {{#if feature_image}}
+      <img
+        src="{{img_url feature_image size="xl"}}"
+        alt=""
+        role="presentation"
+        style="
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          opacity: 0.15;
+        "
+        loading="eager"
+      />
+    {{/if}}
+
+    <div style="position: relative; z-index: 1;">
+      <div class="ornament" aria-hidden="true">
+        <span class="ornament-icon">⚓</span>
+      </div>
+      <h1 style="
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 5vw, 4rem);
+        color: var(--color-white);
+        margin-bottom: 0.5rem;
+      ">{{title}}</h1>
+      {{#if custom_excerpt}}
+        <p style="
+          font-size: 1.1rem;
+          color: var(--color-parchment);
+          opacity: 0.75;
+          max-width: 600px;
+          margin: 0 auto;
+          font-style: italic;
+        ">{{custom_excerpt}}</p>
+      {{/if}}
+    </div>
+  </header>
+
+  {{!-- Page Content --}}
+  <div class="post-content">
+    {{content}}
+  </div>
+
+</div>

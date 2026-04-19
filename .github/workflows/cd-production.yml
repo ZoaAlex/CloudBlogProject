@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
 
+env:
+  THEME_NAME: grand-line-theme
+
 jobs:
   deploy-production:
     name: Deploy to Production
@@ -25,15 +28,18 @@ jobs:
             set -e
             cd ${{ secrets.PROD_DEPLOY_PATH }}
 
-            echo "Backup de la base SQLite..."
+            echo "Backup SQLite..."
             cp content/data/ghost.db content/data/ghost.db.backup-$(date +%Y%m%d-%H%M%S) || true
+
+            echo "Backup routes.yaml..."
+            cp content/settings/routes.yaml content/settings/routes.yaml.backup-$(date +%Y%m%d-%H%M%S) || true
 
             echo "Pull branche main..."
             git fetch origin main
             git checkout main
             git pull origin main
 
-            echo "Redemarrage Ghost en production..."
+            echo "Demarrage Ghost en production (theme: ${{ env.THEME_NAME }})..."
             NODE_ENV=production docker compose up -d --remove-orphans
             docker image prune -f
 
@@ -52,6 +58,7 @@ jobs:
             echo "Ghost production HTTP status: $STATUS"
             if [ "$STATUS" -ne 200 ] && [ "$STATUS" -ne 301 ] && [ "$STATUS" -ne 302 ]; then
               echo "Health check production echoue"
+              docker logs ghost --tail 20
               exit 1
             fi
-            echo "Ghost production operationnel."
+            echo "Ghost production operationnel (theme: ${{ env.THEME_NAME }})."

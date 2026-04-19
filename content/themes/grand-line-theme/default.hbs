@@ -1,0 +1,65 @@
+{{!-- default.hbs — Base layout for all pages --}}
+<!DOCTYPE html>
+<html lang="fr" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{meta_title}}</title>
+
+  {{ghost_head}}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link rel="stylesheet" href="{{asset "css/screen.css"}}" />
+
+  {{!-- Favicon --}}
+  {{#if @site.icon}}
+    <link rel="icon" href="{{@site.icon}}" type="image/png" />
+  {{/if}}
+
+  <script>document.documentElement.classList.remove('no-js');</script>
+</head>
+
+<body class="{{body_class}}">
+
+  {{!-- Reading progress bar (only on posts) --}}
+  {{#is "post"}}
+    <div class="reading-progress" role="progressbar" aria-label="Progression de lecture" aria-valuemin="0" aria-valuemax="100"></div>
+  {{/is}}
+
+  {{!-- Navigation --}}
+  {{> "navigation"}}
+
+  {{!-- Main content --}}
+  <main id="main" role="main">
+    {{{body}}}
+  </main>
+
+  {{!-- Newsletter subscribe --}}
+  {{#if @labs.members}}
+    {{^is "signup"}}
+      <section class="subscribe-section" aria-labelledby="subscribe-heading">
+        <div class="ornament" aria-hidden="true">
+          <span class="ornament-icon">☠</span>
+        </div>
+        <h2 class="subscribe-section__title" id="subscribe-heading">
+          Rejoins l'équipage
+        </h2>
+        <p class="subscribe-section__subtitle">
+          Reçois les nouvelles du Grand Line directement dans ta Den Den Mushi
+        </p>
+        {{subscribe_form}}
+      </section>
+    {{/is}}
+  {{/if}}
+
+  {{> "wave-divider"}}
+
+  {{!-- Footer --}}
+  {{> "footer"}}
+
+  {{ghost_foot}}
+  <script src="{{asset "js/main.js"}}" defer></script>
+</body>
+</html>

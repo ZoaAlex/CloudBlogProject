@@ -1,0 +1,45 @@
+{
+  "name": "grand-line",
+  "description": "A Ghost theme inspired by the world of One Piece — adventure, pirates, and the Grand Line.",
+  "version": "1.0.0",
+  "engines": {
+    "ghost": ">=5.0.0"
+  },
+  "license": "MIT",
+  "keywords": [
+    "ghost",
+    "theme",
+    "one-piece",
+    "blog"
+  ],
+  "config": {
+    "posts_per_page": 8,
+    "image_sizes": {
+      "xs": { "width": 300 },
+      "s": { "width": 600 },
+      "m": { "width": 960 },
+      "l": { "width": 1200 },
+      "xl": { "width": 2000 }
+    },
+    "card_assets": true,
+    "custom": {
+      "navigation_layout": {
+        "type": "select",
+        "options": ["Logo on left", "Logo in the middle"],
+        "default": "Logo on left",
+        "description": "Choose the style of the navigation bar"
+      },
+      "show_publication_cover": {
+        "type": "boolean",
+        "default": true,
+        "description": "Show a full-width cover image on the homepage"
+      },
+      "feed_layout": {
+        "type": "select",
+        "options": ["Grid", "List", "Masonry"],
+        "default": "Grid",
+        "description": "Choose the layout of the post feed"
+      }
+    }
+  }
+}

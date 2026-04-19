@@ -1,0 +1,94 @@
+{{!-- partials/post-card.hbs --}}
+{{!-- Usage: {{> "post-card"}} inside a #foreach posts loop --}}
+
+<article class="post-card reveal {{#if featured}}post-card--featured{{/if}}" aria-label="{{title}}">
+
+  <a href="{{url}}" tabindex="-1" aria-hidden="true" style="display:block; overflow:hidden;">
+    {{#if feature_image}}
+      <img
+        class="post-card__image"
+        src="{{img_url feature_image size="m"}}"
+        srcset="
+          {{img_url feature_image size="s"}} 600w,
+          {{img_url feature_image size="m"}} 960w,
+          {{img_url feature_image size="l"}} 1200w
+        "
+        sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
+        alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}"
+        loading="lazy"
+      />
+    {{else}}
+      {{!-- Illustration placeholder based on first tag --}}
+      <div class="post-card__image post-card__illustration" style="
+        background: linear-gradient(135deg, #0f2e48 0%, #0a0e1a 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 16/10;
+        position: relative;
+        overflow: hidden;
+      ">
+        {{!-- Background map ornament --}}
+        <div style="position:absolute;opacity:0.12;top:50%;left:50%;transform:translate(-50%,-50%);">
+          {{> "illustrations" type="map-ornament" width="160" height="160"}}
+        </div>
+        {{!-- Centered anchor --}}
+        <div style="position:relative;z-index:1;opacity:0.5;">
+          {{> "illustrations" type="anchor" width="50" height="62"}}
+        </div>
+        {{!-- Tag name as label --}}
+        {{#if tags}}
+          <span style="
+            position:absolute;
+            bottom:12px;left:12px;
+            font-family:var(--font-heading);
+            font-size:0.6rem;letter-spacing:0.2em;
+            text-transform:uppercase;
+            color:rgba(240,188,94,0.6);
+          ">{{tags.[0].name}}</span>
+        {{/if}}
+      </div>
+    {{/if}}
+  </a>
+
+  <div class="post-card__body">
+    {{#if tags}}
+      <div class="post-card__tags" aria-label="Catégories">
+        {{#foreach tags limit="2"}}
+          <a href="{{url}}" class="tag-pill">{{name}}</a>
+        {{/foreach}}
+      </div>
+    {{/if}}
+
+    <h2 class="post-card__title">
+      <a href="{{url}}">{{title}}</a>
+    </h2>
+
+    {{#if excerpt}}
+      <p class="post-card__excerpt">{{excerpt}}</p>
+    {{/if}}
+
+    <footer class="post-card__meta">
+      {{#foreach authors limit="1"}}
+        <div class="post-card__meta-author">
+          {{#if profile_image}}
+            <img
+              src="{{img_url profile_image size="xs"}}"
+              alt="{{name}}"
+              loading="lazy"
+            />
+          {{/if}}
+          <span>{{name}}</span>
+        </div>
+      {{/foreach}}
+
+      <span class="post-card__meta-divider" aria-hidden="true">·</span>
+      <time datetime="{{date format="YYYY-MM-DD"}}">{{date format="D MMMM YYYY"}}</time>
+
+      {{#if reading_time}}
+        <span class="post-card__meta-divider" aria-hidden="true">·</span>
+        <span>{{reading_time}} min de lecture</span>
+      {{/if}}
+    </footer>
+  </div>
+</article>

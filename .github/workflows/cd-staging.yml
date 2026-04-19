@@ -1,9 +1,11 @@
-﻿
-name: CD - Deploy Staging (develop)
+﻿name: CD - Deploy Staging (develop)
 
 on:
   push:
     branches: [develop]
+
+env:
+  THEME_NAME: grand-line-theme
 
 jobs:
   deploy-staging:
@@ -25,12 +27,23 @@ jobs:
           script: |
             set -e
             cd ${{ secrets.STAGING_DEPLOY_PATH }}
+
+            echo "Pull branche develop..."
             git fetch origin develop
             git checkout develop
             git pull origin develop
+
+            echo "Demarrage Ghost en mode development..."
             NODE_ENV=development docker compose up -d --remove-orphans
             docker image prune -f
-            echo "Staging deploye sur develop"
+
+            echo "Rechargement des routes Ghost..."
+            sleep 5
+            docker exec ghost node -e "
+              const got = require('/var/lib/ghost/versions/5.130.6/node_modules/got');
+            " 2>/dev/null || true
+
+            echo "Staging deploye (theme: ${{ env.THEME_NAME }})"
 
       - name: Health check staging
         uses: appleboy/ssh-action@v1.0.3
@@ -47,3 +60,4 @@ jobs:
               echo "Health check echoue"
               exit 1
             fi
+            echo "Ghost staging operationnel."

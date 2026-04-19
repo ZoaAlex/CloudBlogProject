@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [main, develop]
 
+env:
+  THEME_NAME: grand-line-theme
+
 jobs:
   validate:
     name: GScan Theme Validation
@@ -26,16 +29,16 @@ jobs:
       - name: Check theme folder exists
         id: theme_check
         run: |
-          if [ -d "content/themes/mon-theme" ] && [ "$(ls -A content/themes/mon-theme)" ]; then
+          if [ -d "content/themes/${{ env.THEME_NAME }}" ] && [ "$(ls -A content/themes/${{ env.THEME_NAME }})" ]; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
-            echo " Le dossier content/themes/mon-theme est vide ou absent. Validation ignorée."
+            echo "Le dossier content/themes/${{ env.THEME_NAME }} est vide ou absent. Validation ignoree."
           fi
 
       - name: Install theme dependencies
         if: steps.theme_check.outputs.exists == 'true'
-        working-directory: content/themes/mon-theme
+        working-directory: content/themes/${{ env.THEME_NAME }}
         run: |
           if [ -f "package.json" ]; then
             npm ci
@@ -44,7 +47,17 @@ jobs:
 
       - name: Run GScan
         if: steps.theme_check.outputs.exists == 'true'
-        run: gscan content/themes/mon-theme --verbose
+        run: gscan content/themes/${{ env.THEME_NAME }} --verbose
+
+      - name: Validate routes.yaml syntax
+        run: |
+          if [ -f "content/settings/routes.yaml" ]; then
+            python3 -c "import yaml, sys; yaml.safe_load(open('content/settings/routes.yaml'))" \
+              && echo "routes.yaml valide" \
+              || (echo "routes.yaml invalide" && exit 1)
+          else
+            echo "Pas de routes.yaml, skip."
+          fi
 
       - name: Validate docker-compose syntax
         run: docker compose config --quiet
