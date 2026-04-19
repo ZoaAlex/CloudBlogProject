@@ -1,4 +1,3 @@
-# gosht service
 services:
   blog:
     image: ghost:5-alpine
@@ -6,14 +5,39 @@ services:
     restart: always
     ports:
       - "2368:2368"
-
     environment:
-      database__client: sqlite3
-      database__connection__filename: /var/lib/ghost/content/data/ghost.db
-      # URL de base
-      url: http://localhost:2368
-      # Met en développement pour éviter les cache
-      NODE_ENV: development
+      database__client: mysql
+      database__connection__host: db
+      database__connection__port: 3306
+      database__connection__database: ${MYSQL_DATABASE}
+      database__connection__user: ${MYSQL_USER}
+      database__connection__password: ${MYSQL_PASSWORD}
+      url: ${GHOST_URL}
+      NODE_ENV: production
     volumes:
       - ./content/themes/mon-theme:/var/lib/ghost/content/themes/mon-theme
-      - ./content/data:/var/lib/ghost/content/data
+      - ghost_content:/var/lib/ghost/content
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0-oracle
+    container_name: ghost_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  ghost_content:
+  mysql_data:
