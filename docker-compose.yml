@@ -1,7 +1,9 @@
-# gosht service
+# Ghost service
+# En dev : image officielle ghost:5-alpine
+# En prod : utiliser IMAGE_TAG=votre-user/grand-line-blog:1.2.3 docker compose up
 services:
   blog:
-    image: ghost:5-alpine
+    image: ${IMAGE_TAG:-ghost:5-alpine}
     container_name: ghost
     restart: always
     ports:

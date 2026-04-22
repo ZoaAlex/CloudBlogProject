@@ -6,86 +6,18 @@ on:
 
 env:
   THEME_NAME: grand-line-theme
-  BRANCH: main
 
 jobs:
-  # ─────────────────────────────────────────────
-  # JOB 1 : Backup avant tout
-  # ─────────────────────────────────────────────
-  backup:
-    name: Backup SQLite & routes.yaml
-    runs-on: ubuntu-latest
-    environment: production
-
-    steps:
-      - name: Backup sur EC2 production
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT || 22 }}
-          script: |
-            set -e
-            cd ${{ secrets.PROD_DEPLOY_PATH }}
-            TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-
-            echo "==> Backup ghost.db..."
-            cp content/data/ghost.db content/data/ghost.db.backup-$TIMESTAMP || true
-
-            echo "==> Backup routes.yaml..."
-            cp content/settings/routes.yaml content/settings/routes.yaml.backup-$TIMESTAMP || true
-
-            echo "==> Backups crees ($TIMESTAMP)"
-
-  # ─────────────────────────────────────────────
-  # JOB 2 : Merge sur l'EC2 production
-  # ─────────────────────────────────────────────
-  merge-on-ec2:
-    name: Merge main on EC2 Production
-    runs-on: ubuntu-latest
-    needs: backup
-    environment: production
-
-    steps:
-      - name: Merge branche main sur EC2
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT || 22 }}
-          script: |
-            set -e
-            cd ${{ secrets.PROD_DEPLOY_PATH }}
-
-            echo "==> Configuration Git..."
-            git config user.email "ci-bot@ghost-deploy.local"
-            git config user.name "CI Deploy Bot"
-
-            echo "==> Fetch toutes les branches..."
-            git fetch --all
-
-            echo "==> Checkout main..."
-            git checkout main
-
-            echo "==> Merge origin/main (fast-forward)..."
-            git merge --ff-only origin/main
-
-            echo "==> Merge termine sur EC2 production (branche: main)"
-            git log --oneline -3
-
-  # ─────────────────────────────────────────────
-  # JOB 3 : Redémarrage Ghost après le merge
-  # ─────────────────────────────────────────────
   deploy-production:
-    name: Deploy Ghost Production
+    name: Deploy to Production
     runs-on: ubuntu-latest
-    needs: merge-on-ec2
     environment: production
 
     steps:
-      - name: Restart Ghost
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -96,23 +28,25 @@ jobs:
             set -e
             cd ${{ secrets.PROD_DEPLOY_PATH }}
 
-            echo "==> Redemarrage Ghost en production..."
-            NODE_ENV=production docker compose up -d --remove-orphans
+            echo "Backup SQLite..."
+            cp content/data/ghost.db content/data/ghost.db.backup-$(date +%Y%m%d-%H%M%S) || true
+
+            echo "Backup routes.yaml..."
+            cp content/settings/routes.yaml content/settings/routes.yaml.backup-$(date +%Y%m%d-%H%M%S) || true
+
+            echo "Pull branche main..."
+            git fetch origin main
+            git checkout main
+            git pull origin main
+
+            echo "Demarrage Ghost en production (theme: ${{ env.THEME_NAME }})..."
+            IMAGE_TAG=${{ secrets.DOCKER_USERNAME }}/grand-line-blog:${{ github.ref_name }} \
+              NODE_ENV=production docker compose up -d --remove-orphans
             docker image prune -f
 
-            echo "==> Ghost production redémarre (theme: ${{ env.THEME_NAME }})"
+            echo "Deploiement production termine."
 
-  # ─────────────────────────────────────────────
-  # JOB 4 : Health check
-  # ─────────────────────────────────────────────
-  health-check:
-    name: Health Check Production
-    runs-on: ubuntu-latest
-    needs: deploy-production
-    environment: production
-
-    steps:
-      - name: Verifier que Ghost repond
+      - name: Health check production
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -124,7 +58,7 @@ jobs:
             STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:2368)
             echo "Ghost production HTTP status: $STATUS"
             if [ "$STATUS" -ne 200 ] && [ "$STATUS" -ne 301 ] && [ "$STATUS" -ne 302 ]; then
-              echo "Health check production echoue - rollback recommande"
+              echo "Health check production echoue"
               docker logs ghost --tail 20
               exit 1
             fi

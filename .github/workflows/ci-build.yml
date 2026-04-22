@@ -1,0 +1,166 @@
+name: CI - Build & Publish Docker Image
+
+# Déclencheurs :
+# - push d'un tag vX.Y.Z        → image versionnée (ex: 1.2.3, 1.2, 1, latest)
+# - push sur main                → image tagged "main" + SHA court
+# - push sur develop             → image tagged "develop" + SHA court
+# - pull_request vers main       → build only (pas de push)
+
+on:
+  push:
+    branches: [main, develop]
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+  pull_request:
+    branches: [main]
+
+env:
+  REGISTRY: docker.io
+  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/grand-line-blog
+
+jobs:
+  # ─────────────────────────────────────────────
+  # JOB 1 : Build & Push de l'image Docker
+  # ─────────────────────────────────────────────
+  build-and-push:
+    name: Build & Publish Image
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    outputs:
+      image_version: ${{ steps.meta.outputs.version }}
+      image_tags: ${{ steps.meta.outputs.tags }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        # Pas de login sur les PR (build only)
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Génère automatiquement les tags selon le contexte :
+      # tag v1.2.3  → 1.2.3 / 1.2 / 1 / latest
+      # push main   → main / sha-abc1234
+      # push develop→ develop / sha-abc1234
+      - name: Extract Docker metadata & version tags
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_NAME }}
+          tags: |
+            # Tag sémantique complet depuis un tag Git vX.Y.Z
+            type=semver,pattern={{version}}
+            # Tag majeur.mineur (ex: 1.2)
+            type=semver,pattern={{major}}.{{minor}}
+            # Tag majeur seul (ex: 1)
+            type=semver,pattern={{major}}
+            # latest uniquement sur les tags Git
+            type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/v') }}
+            # Nom de branche (main ou develop)
+            type=ref,event=branch
+            # SHA court du commit (ex: sha-abc1234)
+            type=sha,prefix=sha-,format=short
+          labels: |
+            org.opencontainers.image.title=Grand Line Blog
+            org.opencontainers.image.description=Ghost CMS with One Piece Grand Line theme
+            org.opencontainers.image.vendor=ZoaAlex
+            org.opencontainers.image.version=${{ github.ref_name }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          # Cache GitHub Actions pour accélérer les builds
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          # Plateformes cibles
+          platforms: linux/amd64,linux/arm64
+
+      - name: Print published tags
+        if: github.event_name != 'pull_request'
+        run: |
+          echo "Image publiee avec les tags suivants :"
+          echo "${{ steps.meta.outputs.tags }}" | tr ',' '\n'
+          echo ""
+          echo "Version : ${{ steps.meta.outputs.version }}"
+
+  # ─────────────────────────────────────────────
+  # JOB 2 : Vérification de l'image publiée
+  # ─────────────────────────────────────────────
+  verify-image:
+    name: Verify Published Image
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.event_name != 'pull_request'
+
+    steps:
+      - name: Pull et tester l'image
+        run: |
+          IMAGE="${{ env.IMAGE_NAME }}:${{ needs.build-and-push.outputs.image_version }}"
+          echo "Test de l'image : $IMAGE"
+
+          docker pull "$IMAGE"
+
+          # Vérifie que Ghost démarre correctement
+          docker run -d \
+            --name ghost-test \
+            -p 2368:2368 \
+            -e url=http://localhost:2368 \
+            -e database__client=sqlite3 \
+            -e database__connection__filename=/tmp/ghost-test.db \
+            -e NODE_ENV=production \
+            "$IMAGE"
+
+          echo "Attente du démarrage de Ghost..."
+          sleep 15
+
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:2368 || echo "000")
+          echo "HTTP status: $STATUS"
+
+          docker stop ghost-test
+          docker rm ghost-test
+
+          if [ "$STATUS" -ne 200 ] && [ "$STATUS" -ne 301 ] && [ "$STATUS" -ne 302 ]; then
+            echo "L'image ne repond pas correctement (HTTP $STATUS)"
+            exit 1
+          fi
+
+          echo "Image verifiee avec succes (HTTP $STATUS)"
+
+  # ─────────────────────────────────────────────
+  # JOB 3 : Résumé du versionnement
+  # ─────────────────────────────────────────────
+  version-summary:
+    name: Version Summary
+    runs-on: ubuntu-latest
+    needs: [build-and-push, verify-image]
+    if: github.event_name != 'pull_request'
+
+    steps:
+      - name: Afficher le resume de version
+        run: |
+          echo "============================================"
+          echo "  IMAGE PUBLIEE AVEC SUCCES"
+          echo "============================================"
+          echo "  Ref       : ${{ github.ref_name }}"
+          echo "  SHA       : ${{ github.sha }}"
+          echo "  Version   : ${{ needs.build-and-push.outputs.image_version }}"
+          echo "  Tags      :"
+          echo "${{ needs.build-and-push.outputs.image_tags }}" | tr ',' '\n' | sed 's/^/    - /'
+          echo "============================================"
