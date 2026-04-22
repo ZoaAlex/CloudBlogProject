@@ -22,6 +22,9 @@ content/themes/source/
 # Fichiers de configuration locaux
 config.*.json
 
+# Fichier d'environnement
+.env
+
 # Garder les thèmes custom et les settings
 !content/themes/
 !content/themes/grand-line-theme/
