@@ -1,6 +1,6 @@
 # Ghost service
-# En dev : image officielle ghost:5-alpine
-# En prod : utiliser IMAGE_TAG=votre-user/grand-line-blog:1.2.3 docker compose up
+# En dev  : docker compose up  (utilise ghost:5-alpine + NODE_ENV=development)
+# En prod : IMAGE_TAG=user/grand-line-blog:x.y.z NODE_ENV=production GHOST_URL=https://monsite.com docker compose up
 services:
   blog:
     image: ${IMAGE_TAG:-ghost:5-alpine}
@@ -12,8 +12,8 @@ services:
     environment:
       database__client: sqlite3
       database__connection__filename: /var/lib/ghost/content/data/ghost.db
-      url: http://localhost:2368
-      NODE_ENV: development
+      url: ${GHOST_URL:-http://localhost:2368}
+      NODE_ENV: ${NODE_ENV:-development}
       # Active le thème grand-line comme thème par défaut
       activeTheme: grand-line-theme
     volumes:

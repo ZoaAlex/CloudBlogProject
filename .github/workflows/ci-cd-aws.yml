@@ -112,6 +112,8 @@ jobs:
 
             echo "Redemarrage avec la nouvelle image..."
             IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/grand-line-blog:${IMAGE_TAG}" \
+            GHOST_URL="${{ secrets.STAGING_URL }}" \
+            NODE_ENV=production \
               docker compose up -d --remove-orphans
 
             docker image prune -f
@@ -170,7 +172,9 @@ jobs:
 
             echo "Redemarrage en production..."
             IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/grand-line-blog:${IMAGE_TAG}" \
-              NODE_ENV=production docker compose up -d --remove-orphans
+            GHOST_URL="${{ secrets.PROD_URL }}" \
+            NODE_ENV=production \
+              docker compose up -d --remove-orphans
 
             docker image prune -f
             echo "Production deployee : ${IMAGE_TAG}"
