@@ -28,9 +28,12 @@ jobs:
         id: tag
         run: |
           SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
-          BRANCH=$(echo "${{ github.ref_name }}" | sed 's/\//-/g')
+          BRANCH=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9._-]/-/g' | sed 's/-\+/-/g' | sed 's/^-\|-$//g')
           echo "tag=${BRANCH}-${SHORT_SHA}" >> $GITHUB_OUTPUT
           echo "Image tag: ${BRANCH}-${SHORT_SHA}"
+
+      - name: Pull Ghost base image (cache)
+        run: docker pull ghost:5-alpine || true
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
