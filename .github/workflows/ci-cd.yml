@@ -7,7 +7,7 @@ on:
 env:
   ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
   IMAGE_TAG: ${{ github.sha }} 
-  AWS_REGION : eu-north-1
+  AWS_REGION: eu-north-1
   # Utilise le SHA du commit comme tag d'image
 
 jobs:
