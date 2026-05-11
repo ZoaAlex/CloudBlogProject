@@ -31,3 +31,14 @@ config.*.json
 !content/themes/mon-theme/
 !content/settings/
 !content/settings/routes.yaml
+
+# Garder la structure des dossiers data (sans les fichiers)
+!content/data/
+!content/data/images/
+!content/data/images/.gitkeep
+!content/data/media/
+!content/data/media/.gitkeep
+!content/data/files/
+!content/data/files/.gitkeep
+!content/data/logs/
+!content/data/logs/.gitkeep
