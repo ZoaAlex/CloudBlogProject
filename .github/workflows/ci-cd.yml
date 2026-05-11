@@ -7,7 +7,8 @@ on:
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
   ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-  IMAGE_TAG: ${{ github.sha }} # Utilise le SHA du commit comme tag d'image
+  IMAGE_TAG: ${{ github.sha }} 
+  # Utilise le SHA du commit comme tag d'image
 
 jobs:
   deploy:
