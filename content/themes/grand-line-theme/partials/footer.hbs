@@ -1,0 +1,95 @@
+{{!-- partials/footer.hbs --}}
+<footer class="site-footer">
+
+  {{!-- Jolly Roger watermark illustration --}}
+  <div aria-hidden="true" style="
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 0;
+  ">
+    {{> "illustrations" type="jolly-roger" width="520" height="520"}}
+  </div>
+
+  <div class="footer-grid">
+
+    {{!-- Brand --}}
+    <div class="footer-brand">
+      <div class="footer-brand__logo">
+        {{#if @site.logo}}
+          <img src="{{@site.logo}}" alt="{{@site.title}}" style="height:48px;margin-bottom:0.5rem;" />
+        {{else}}
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:var(--space-sm);">
+            {{> "illustrations" type="anchor" width="28" height="34"}}
+            <span>{{@site.title}}</span>
+          </div>
+        {{/if}}
+      </div>
+      <p class="footer-brand__desc">
+        {{#if @site.description}}
+          {{@site.description}}
+        {{else}}
+          Bienvenue sur le Grand Line. Chaque article est une île à explorer — arcs, théories, personnages et secrets de l'univers de One Piece n'attendent que vous.
+        {{/if}}
+      </p>
+      <div class="footer-social" aria-label="Réseaux sociaux">
+        {{#if @site.twitter}}
+          <a href="https://twitter.com/{{@site.twitter}}" target="_blank" rel="noopener" aria-label="Twitter">𝕏</a>
+        {{/if}}
+        {{#if @site.facebook}}
+          <a href="https://facebook.com/{{@site.facebook}}" target="_blank" rel="noopener" aria-label="Facebook">f</a>
+        {{/if}}
+        <a href="{{@site.url}}/rss/" aria-label="Flux RSS">◉</a>
+      </div>
+    </div>
+
+    {{!-- Navigation --}}
+    <div class="footer-col">
+      <p class="footer-col__title">Navigation</p>
+      <ul class="footer-col__list" role="list">
+        {{#foreach @site.navigation}}
+          <li><a href="{{url}}">{{label}}</a></li>
+        {{/foreach}}
+      </ul>
+    </div>
+
+    {{!-- Tags populaires --}}
+    <div class="footer-col">
+      <p class="footer-col__title">Univers</p>
+      <ul class="footer-col__list" role="list">
+        <li><a href="{{@site.url}}/tag/arcs/">Arcs narratifs</a></li>
+        <li><a href="{{@site.url}}/tag/personnages/">Personnages</a></li>
+        <li><a href="{{@site.url}}/tag/theories/">Théories</a></li>
+        <li><a href="{{@site.url}}/tag/nakama/">Nakama</a></li>
+        <li><a href="{{@site.url}}/tag/fruits-du-demon/">Fruits du Démon</a></li>
+        <li><a href="{{@site.url}}/tag/haki/">Haki</a></li>
+      </ul>
+    </div>
+
+    {{!-- Legal --}}
+    <div class="footer-col">
+      <p class="footer-col__title">Informations</p>
+      <ul class="footer-col__list" role="list">
+        <li><a href="{{@site.url}}/a-propos/">À propos</a></li>
+        <li><a href="{{@site.url}}/contact/">Contact</a></li>
+        <li><a href="{{@site.url}}/rss/">Flux RSS</a></li>
+        {{#if @labs.members}}
+          <li><a href="{{@site.url}}/#/portal/">Abonnement</a></li>
+        {{/if}}
+      </ul>
+    </div>
+
+  </div>
+
+  {{!-- Footer bottom with compass --}}
+  <div class="footer-bottom">
+    <div style="display:flex;align-items:center;gap:0.75rem;">
+      <span style="opacity:0.6;">{{> "illustrations" type="compass" width="20" height="20"}}</span>
+      <span>© {{date format="YYYY"}} {{@site.title}} — Fan blog indépendant. One Piece © Eiichiro Oda / Shueisha.</span>
+    </div>
+    <span>Propulsé par <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a></span>
+  </div>
+</footer>

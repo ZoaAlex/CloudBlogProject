@@ -1,31 +1,33 @@
-# Ignorer les dossiers système de Ghost
+# Données Ghost (ne pas versionner)
 content/data/
 content/logs/
 content/images/
 content/adapters/
-content/settings/
+content/media/
+content/files/
+content/public/
 
-# Ignorer les thèmes par défaut (liens symboliques)
-content/themes/casper
-content/themes/source
+# Thèmes par défaut Ghost (liens symboliques)
 content/themes/casper/
 content/themes/source/
-
-
-# Garder ton thème
-!content/themes/
-!content/themes/mon-theme/
-
-# Fichiers de log
-*.log
 
 # Fichiers de base de données
 *.db
 *.db-shm
 *.db-wal
 
+# Fichiers de log
+*.log
+
 # Fichiers de configuration locaux
 config.*.json
 
-# fichier d'environnement
+# Fichier d'environnement
 .env
+
+# Garder les thèmes custom et les settings
+!content/themes/
+!content/themes/grand-line-theme/
+!content/themes/mon-theme/
+!content/settings/
+!content/settings/routes.yaml

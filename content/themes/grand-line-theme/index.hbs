@@ -1,0 +1,240 @@
+{{!-- index.hbs — Homepage --}}
+{{!< default}}
+
+{{!-- ============================
+     HERO SECTION
+============================= --}}
+<section class="site-hero" aria-label="Présentation du blog">
+  <div class="site-hero__bg" aria-hidden="true"></div>
+
+  {{#if @site.cover_image}}
+    <img
+      class="site-hero__cover"
+      src="{{img_url @site.cover_image size="xl"}}"
+      alt=""
+      role="presentation"
+      loading="eager"
+    />
+  {{/if}}
+
+  {{!-- Ship illustration in background --}}
+  <div aria-hidden="true" style="
+    position: absolute;
+    bottom: 80px;
+    right: 5%;
+    opacity: 0.22;
+    pointer-events: none;
+    z-index: 1;
+  ">
+    {{> "illustrations" type="ship-silhouette" width="520" height="320"}}
+  </div>
+
+  {{!-- Map ornament top-left --}}
+  <div aria-hidden="true" style="
+    position: absolute;
+    top: 110px;
+    left: 4%;
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 1;
+  ">
+    {{> "illustrations" type="map-ornament" width="110" height="110"}}
+  </div>
+
+  {{!-- Sea King lurking bottom-left --}}
+  <div aria-hidden="true" style="
+    position: absolute;
+    bottom: 60px;
+    left: 0;
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 1;
+  ">
+    {{> "illustrations" type="sea-king" width="380" height="200"}}
+  </div>
+
+  <div class="site-hero__content" style="z-index: 3; position: relative;">
+    <p class="site-hero__eyebrow animate-in">⚓ Le Grand Line vous attend</p>
+
+    <h1 class="site-hero__title animate-in">
+      {{#if @site.title}}
+        {{@site.title}}
+      {{else}}
+        <span>Grand Line</span>
+        Chronicle
+      {{/if}}
+    </h1>
+
+    {{#if @site.description}}
+      <p class="site-hero__description animate-in">{{ @site.description }}</p>
+    {{else}}
+      <p class="site-hero__description animate-in">
+        Analyses, théories et explorations de l'univers d'Eiichiro Oda.
+        Chaque article est une aventure vers le trésor ultime.
+      </p>
+    {{/if}}
+
+    <a href="#articles" class="hero-cta animate-in">
+      <span class="float-anchor">⛵</span>
+      Embarquer
+    </a>
+  </div>
+
+  {{!-- Ocean waves at bottom of hero --}}
+  <div style="position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;" aria-hidden="true">
+    {{> "illustrations" type="waves-hero"}}
+  </div>
+</section>
+
+
+{{!-- ============================
+     COMPASS SEPARATOR
+============================= --}}
+<div style="
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-md) 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+" aria-hidden="true">
+  {{> "illustrations" type="compass" width="64" height="64"}}
+  <div style="height:1px; flex:1; background:linear-gradient(to right, rgba(201,146,42,0.4), transparent);"></div>
+  {{> "illustrations" type="anchor" width="40" height="50"}}
+  <div style="height:1px; flex:1; background:linear-gradient(to left, rgba(201,146,42,0.4), transparent);"></div>
+  {{> "illustrations" type="compass" width="64" height="64"}}
+</div>
+
+
+{{!-- ============================
+     FEATURED POST
+============================= --}}
+{{#get "posts" filter="featured:true" limit="1" as |featured_posts|}}
+  {{#if featured_posts}}
+    <section class="featured-strip" id="articles" aria-labelledby="featured-heading">
+      <div class="section-header">
+        <div class="ornament" aria-hidden="true"><span class="ornament-icon">⚓</span></div>
+        <p class="section-header__label">À la une</p>
+        <h2 class="section-header__title" id="featured-heading">Article du moment</h2>
+      </div>
+      <div class="post-grid">
+        {{#foreach featured_posts}}
+          <article class="post-card post-card--featured reveal" aria-label="{{title}}">
+            {{#if feature_image}}
+              <img
+                class="post-card__image"
+                src="{{img_url feature_image size="l"}}"
+                srcset="{{img_url feature_image size="m"}} 960w, {{img_url feature_image size="l"}} 1200w"
+                alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}"
+                loading="lazy"
+              />
+            {{else}}
+              <div style="background:linear-gradient(135deg,#112d45 0%,#0a0e1a 100%);display:flex;align-items:center;justify-content:center;height:360px;overflow:hidden;">
+                <div style="opacity:0.4;">{{> "illustrations" type="ship-silhouette" width="400" height="240"}}</div>
+              </div>
+            {{/if}}
+            <div class="post-card__body">
+              {{#if tags}}
+                <div class="post-card__tags">
+                  {{#foreach tags limit="3"}}
+                    <a href="{{url}}" class="tag-pill">{{name}}</a>
+                  {{/foreach}}
+                </div>
+              {{/if}}
+              <h2 class="post-card__title" style="font-size:clamp(1.5rem,2.5vw,2.2rem);">
+                <a href="{{url}}">{{title}}</a>
+              </h2>
+              {{#if excerpt}}
+                <p class="post-card__excerpt" style="-webkit-line-clamp:5;">{{excerpt}}</p>
+              {{/if}}
+              <a href="{{url}}" class="hero-cta" style="margin-top:auto;width:fit-content;">
+                Lire l'article →
+              </a>
+              <div class="post-card__meta" style="margin-top:1.5rem;">
+                {{#foreach authors limit="1"}}<span>{{name}}</span>{{/foreach}}
+                <span>·</span>
+                <time datetime="{{date format="YYYY-MM-DD"}}">{{date format="D MMMM YYYY"}}</time>
+                {{#if reading_time}}<span>· {{reading_time}} min</span>{{/if}}
+              </div>
+            </div>
+          </article>
+        {{/foreach}}
+      </div>
+    </section>
+  {{/if}}
+{{/get}}
+
+
+{{> "wave-divider"}}
+
+
+{{!-- ============================
+     POSTS GRID
+============================= --}}
+<section class="featured-strip" aria-labelledby="posts-heading">
+  <div class="section-header">
+    <p class="section-header__label">Journal de bord</p>
+    <h2 class="section-header__title" id="posts-heading">Derniers articles</h2>
+  </div>
+
+  <div class="post-grid">
+    {{#foreach posts}}
+      {{> "post-card"}}
+    {{/foreach}}
+  </div>
+
+  {{#if pagination}}
+    <nav class="pagination" role="navigation" aria-label="Pagination">
+      {{#if pagination.prev}}
+        <a href="{{pagination.prev}}" aria-label="Page précédente">← Précédent</a>
+      {{/if}}
+      <span class="page-number current" aria-current="page">
+        Page {{pagination.page}} / {{pagination.pages}}
+      </span>
+      {{#if pagination.next}}
+        <a href="{{pagination.next}}" aria-label="Page suivante">Suivant →</a>
+      {{/if}}
+    </nav>
+  {{/if}}
+</section>
+
+
+{{!-- ============================
+     WANTED POSTER SUBSCRIBE TEASER
+============================= --}}
+<div style="
+  max-width: 1300px;
+  margin: var(--space-lg) auto;
+  padding: 0 var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+  justify-content: center;
+">
+  <div style="opacity:0.55; flex-shrink:0;">
+    {{> "illustrations" type="wanted-poster-frame" width="200" height="260"}}
+  </div>
+
+  <div style="max-width:480px; text-align:center;">
+    <p style="font-family:var(--font-heading);font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--color-gold);margin-bottom:0.5rem;">
+      Rejoins l'équipage
+    </p>
+    <h2 style="font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2.2rem);color:var(--color-white);margin-bottom:0.75rem;">
+      Deviens un Nakama
+    </h2>
+    <p style="color:var(--color-parchment);opacity:0.75;font-style:italic;margin-bottom:var(--space-md);line-height:1.7;">
+      Reçois les nouvelles du Grand Line directement dans ta Den Den Mushi —
+      analyses, théories, et alertes de nouveaux arcs.
+    </p>
+    {{#if @labs.members}}
+      <a href="{{@site.url}}/#/portal/signup" class="hero-cta" style="margin:0 auto;">
+        S'abonner gratuitement
+      </a>
+    {{/if}}
+  </div>
+
+  <div style="opacity:0.55; flex-shrink:0;">
+    {{> "illustrations" type="wanted-poster-frame" width="200" height="260"}}
+  </div>
+</div>

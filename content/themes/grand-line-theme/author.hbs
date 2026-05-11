@@ -1,0 +1,118 @@
+{{!-- author.hbs — Author archive page --}}
+{{!< default}}
+
+<div style="max-width: 1300px; margin: 0 auto; padding: 120px var(--space-md) var(--space-lg);">
+
+  {{!-- Author Header --}}
+  <header style="
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid rgba(201,146,42,0.15);
+  ">
+    {{#if author.profile_image}}
+      <img
+        src="{{img_url author.profile_image size="s"}}"
+        alt="{{author.name}}"
+        style="
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 3px solid rgba(201,146,42,0.4);
+          flex-shrink: 0;
+          box-shadow: 0 0 30px rgba(201,146,42,0.15);
+        "
+        loading="eager"
+      />
+    {{else}}
+      <div style="
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--color-ocean), var(--color-navy));
+        border: 3px solid rgba(201,146,42,0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        flex-shrink: 0;
+      ">⚓</div>
+    {{/if}}
+
+    <div>
+      <p style="
+        font-family: var(--font-heading);
+        font-size: 0.65rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--color-gold);
+        margin-bottom: 0.25rem;
+      ">Membre de l'équipage</p>
+
+      <h1 style="
+        font-family: var(--font-display);
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        color: var(--color-white);
+        margin-bottom: 0.5rem;
+      ">{{author.name}}</h1>
+
+      {{#if author.bio}}
+        <p style="
+          font-size: 1rem;
+          color: var(--color-parchment);
+          opacity: 0.75;
+          max-width: 550px;
+          line-height: 1.7;
+          font-style: italic;
+          margin-bottom: var(--space-sm);
+        ">{{author.bio}}</p>
+      {{/if}}
+
+      <div style="
+        display: flex;
+        gap: var(--space-sm);
+        font-family: var(--font-heading);
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        color: var(--color-gold);
+        opacity: 0.7;
+      ">
+        <span>{{pagination.total}} article{{#if pagination.total}}s{{/if}}</span>
+        {{#if author.website}}
+          <span>·</span>
+          <a href="{{author.website}}" target="_blank" rel="noopener" style="color:var(--color-gold-light);">Site web ↗</a>
+        {{/if}}
+        {{#if author.twitter}}
+          <span>·</span>
+          <a href="https://twitter.com/{{author.twitter}}" target="_blank" rel="noopener" style="color:var(--color-gold-light);">Twitter ↗</a>
+        {{/if}}
+      </div>
+    </div>
+  </header>
+
+  {{!-- Posts grid --}}
+  <div class="post-grid">
+    {{#foreach posts}}
+      {{> "post-card"}}
+    {{/foreach}}
+  </div>
+
+  {{!-- Pagination --}}
+  {{#if pagination}}
+    <nav class="pagination" role="navigation" aria-label="Pagination">
+      {{#if pagination.prev}}
+        <a href="{{pagination.prev}}">← Précédent</a>
+      {{/if}}
+      <span class="page-number current" aria-current="page">
+        Page {{pagination.page}} / {{pagination.pages}}
+      </span>
+      {{#if pagination.next}}
+        <a href="{{pagination.next}}">Suivant →</a>
+      {{/if}}
+    </nav>
+  {{/if}}
+
+</div>

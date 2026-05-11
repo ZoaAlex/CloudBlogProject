@@ -1,0 +1,579 @@
+{{!-- partials/illustrations.hbs --}}
+{{!-- Reusable SVG illustrations for the Grand Line theme --}}
+
+{{!--
+  Usage:
+  {{> "illustrations" type="jolly-roger"}}
+  {{> "illustrations" type="ship-silhouette"}}
+  {{> "illustrations" type="compass"}}
+  {{> "illustrations" type="map-ornament"}}
+  {{> "illustrations" type="anchor"}}
+  {{> "illustrations" type="sea-king"}}
+  Available types: jolly-roger, ship-silhouette, compass, map-ornament, anchor, sea-king, waves-hero, wanted-poster-frame
+--}}
+
+{{#if (eq type "jolly-roger")}}
+{{!-- =====================================================
+     JOLLY ROGER — Skull with straw hat
+====================================================== --}}
+<svg
+  class="illustration illustration--jolly-roger"
+  width="{{#if width}}{{width}}{{else}}160{{/if}}"
+  height="{{#if height}}{{height}}{{else}}160{{/if}}"
+  viewBox="0 0 160 160"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-label="Jolly Roger — crâne avec chapeau de paille"
+  role="img"
+>
+  <!-- Straw hat brim -->
+  <ellipse cx="80" cy="66" rx="62" ry="11" fill="#c9922a" opacity="0.9"/>
+  <!-- Hat crown shadow -->
+  <ellipse cx="80" cy="62" rx="36" ry="8" fill="#a07018" opacity="0.6"/>
+  <!-- Hat crown -->
+  <path d="M44 66 Q44 36 80 34 Q116 36 116 66" fill="#c9922a" opacity="0.95"/>
+  <!-- Hat band -->
+  <path d="M44 66 Q62 60 80 59 Q98 60 116 66" stroke="#7a4f0a" stroke-width="3" fill="none"/>
+  <!-- Hat ribbon knot -->
+  <circle cx="80" cy="63" r="4" fill="#7a4f0a"/>
+
+  <!-- Skull -->
+  <!-- Cranium -->
+  <ellipse cx="80" cy="98" rx="34" ry="30" fill="#f5ead8"/>
+  <!-- Skull shade -->
+  <ellipse cx="80" cy="102" rx="34" ry="26" fill="#e8d5b0"/>
+  <ellipse cx="80" cy="94" rx="34" ry="28" fill="#f5ead8"/>
+
+  <!-- Eye sockets -->
+  <ellipse cx="68" cy="94" rx="10" ry="11" fill="#1a1a2e"/>
+  <ellipse cx="92" cy="94" rx="10" ry="11" fill="#1a1a2e"/>
+  <!-- Eye glints -->
+  <circle cx="65" cy="91" r="2.5" fill="rgba(255,255,255,0.15)"/>
+  <circle cx="89" cy="91" r="2.5" fill="rgba(255,255,255,0.15)"/>
+
+  <!-- Nose -->
+  <path d="M76 108 Q80 104 84 108 Q80 112 76 108Z" fill="#c9b28a"/>
+
+  <!-- Teeth / Jaw -->
+  <path d="M62 116 Q80 126 98 116" stroke="#c9b28a" stroke-width="2" fill="none"/>
+  <line x1="68" y1="116" x2="67" y2="124" stroke="#c9b28a" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="76" y1="119" x2="76" y2="127" stroke="#c9b28a" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="84" y1="119" x2="84" y2="127" stroke="#c9b28a" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="92" y1="116" x2="93" y2="124" stroke="#c9b28a" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Crossbones -->
+  <line x1="28" y1="130" x2="132" y2="78" stroke="#f5ead8" stroke-width="7" stroke-linecap="round" opacity="0.8"/>
+  <line x1="28" y1="78" x2="132" y2="130" stroke="#f5ead8" stroke-width="7" stroke-linecap="round" opacity="0.8"/>
+  <!-- Bone knobs -->
+  <circle cx="26" cy="130" r="6" fill="#e8d5b0"/>
+  <circle cx="134" cy="78" r="6" fill="#e8d5b0"/>
+  <circle cx="26" cy="78" r="6" fill="#e8d5b0"/>
+  <circle cx="134" cy="130" r="6" fill="#e8d5b0"/>
+</svg>
+{{/if}}
+
+{{#if (eq type "ship-silhouette")}}
+{{!-- =====================================================
+     THOUSAND SUNNY SHIP SILHOUETTE
+====================================================== --}}
+<svg
+  class="illustration illustration--ship"
+  width="{{#if width}}{{width}}{{else}}320{{/if}}"
+  height="{{#if height}}{{height}}{{else}}200{{/if}}"
+  viewBox="0 0 320 200"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-label="Le Thousand Sunny naviguant sur les flots"
+  role="img"
+>
+  <!-- Ocean waves background -->
+  <path d="M0 140 Q40 128 80 140 Q120 152 160 140 Q200 128 240 140 Q280 152 320 140 L320 200 L0 200Z" fill="#1a4a6b" opacity="0.5"/>
+  <path d="M0 152 Q40 140 80 152 Q120 164 160 152 Q200 140 240 152 Q280 164 320 152 L320 200 L0 200Z" fill="#112d45" opacity="0.7"/>
+
+  <!-- Hull -->
+  <path d="M40 145 Q80 165 160 168 Q240 165 280 145 L270 130 L50 130Z" fill="#c9922a"/>
+  <!-- Hull shade -->
+  <path d="M40 145 Q80 155 160 158 Q240 155 280 145 L278 148 Q240 162 160 165 Q80 162 42 148Z" fill="#a07018"/>
+
+  <!-- Deck -->
+  <rect x="55" y="110" width="210" height="22" rx="4" fill="#8b5e1a"/>
+  <!-- Deck planks -->
+  <line x1="90" y1="110" x2="90" y2="132" stroke="#7a4f0a" stroke-width="1" opacity="0.5"/>
+  <line x1="130" y1="110" x2="130" y2="132" stroke="#7a4f0a" stroke-width="1" opacity="0.5"/>
+  <line x1="160" y1="110" x2="160" y2="132" stroke="#7a4f0a" stroke-width="1" opacity="0.5"/>
+  <line x1="190" y1="110" x2="190" y2="132" stroke="#7a4f0a" stroke-width="1" opacity="0.5"/>
+  <line x1="230" y1="110" x2="230" y2="132" stroke="#7a4f0a" stroke-width="1" opacity="0.5"/>
+
+  <!-- Sunny figurehead (lion face) -->
+  <circle cx="52" cy="120" r="16" fill="#f0bc5e"/>
+  <!-- Mane -->
+  <circle cx="52" cy="120" r="20" fill="#c9922a" opacity="0.6"/>
+  <circle cx="52" cy="120" r="16" fill="#f0bc5e"/>
+  <!-- Eyes -->
+  <circle cx="47" cy="117" r="3" fill="#1a1a2e"/>
+  <circle cx="57" cy="117" r="3" fill="#1a1a2e"/>
+  <circle cx="47.8" cy="116.2" r="1" fill="white" opacity="0.6"/>
+  <circle cx="57.8" cy="116.2" r="1" fill="white" opacity="0.6"/>
+  <!-- Nose -->
+  <ellipse cx="52" cy="121" rx="3" ry="2" fill="#d4881a"/>
+  <!-- Smile -->
+  <path d="M47 124 Q52 128 57 124" stroke="#1a1a2e" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Main mast -->
+  <line x1="160" y1="14" x2="160" y2="112" stroke="#5c3d10" stroke-width="6" stroke-linecap="round"/>
+  <!-- Fore mast -->
+  <line x1="100" y1="30" x2="100" y2="112" stroke="#5c3d10" stroke-width="5" stroke-linecap="round"/>
+  <!-- Mizzen mast -->
+  <line x1="224" y1="38" x2="224" y2="112" stroke="#5c3d10" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Main sail -->
+  <path d="M162 16 L200 28 L200 100 L162 112Z" fill="#f5ead8" opacity="0.9"/>
+  <path d="M158 16 L120 28 L120 100 L158 112Z" fill="#e8d5b0" opacity="0.85"/>
+  <!-- Sail cross -->
+  <line x1="120" y1="48" x2="200" y2="48" stroke="#c9922a" stroke-width="2" opacity="0.6"/>
+  <line x1="160" y1="16" x2="160" y2="112" stroke="#c9922a" stroke-width="1.5" opacity="0.4"/>
+
+  <!-- Fore sail -->
+  <path d="M101 32 L134 40 L134 100 L101 112Z" fill="#f5ead8" opacity="0.8"/>
+
+  <!-- Jolly Roger flag -->
+  <line x1="160" y1="14" x2="184" y2="10" stroke="#5c3d10" stroke-width="2"/>
+  <path d="M184 10 L210 8 L210 24 L184 26Z" fill="#1a1a2e"/>
+  <!-- Mini skull on flag -->
+  <circle cx="197" cy="17" r="4" fill="#f5ead8" opacity="0.7"/>
+  <line x1="192" y1="22" x2="202" y2="12" stroke="#f5ead8" stroke-width="1.5" opacity="0.6"/>
+  <line x1="192" y1="12" x2="202" y2="22" stroke="#f5ead8" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Rigging lines -->
+  <line x1="160" y1="20" x2="100" y2="38" stroke="#5c3d10" stroke-width="1" opacity="0.5"/>
+  <line x1="100" y1="38" x2="55" y2="110" stroke="#5c3d10" stroke-width="1" opacity="0.4"/>
+  <line x1="160" y1="20" x2="224" y2="42" stroke="#5c3d10" stroke-width="1" opacity="0.5"/>
+
+  <!-- Water reflection -->
+  <path d="M60 162 Q160 170 260 162" stroke="#c9922a" stroke-width="1" fill="none" opacity="0.2"/>
+</svg>
+{{/if}}
+
+{{#if (eq type "compass")}}
+{{!-- =====================================================
+     LOG POSE / COMPASS
+====================================================== --}}
+<svg
+  class="illustration illustration--compass"
+  width="{{#if width}}{{width}}{{else}}120{{/if}}"
+  height="{{#if height}}{{height}}{{else}}120{{/if}}"
+  viewBox="0 0 120 120"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-label="Log Pose — boussole du Grand Line"
+  role="img"
+>
+  <!-- Outer ring -->
+  <circle cx="60" cy="60" r="56" fill="#0d1b2a" stroke="#c9922a" stroke-width="2"/>
+  <!-- Inner ring -->
+  <circle cx="60" cy="60" r="48" fill="#112d45" stroke="#c9922a" stroke-width="1" opacity="0.6"/>
+  <!-- Face -->
+  <circle cx="60" cy="60" r="40" fill="#0a0e1a"/>
+  <circle cx="60" cy="60" r="38" fill="#0d1b2a"/>
+
+  <!-- Cardinal marks -->
+  <text font-family="serif" font-size="11" font-weight="700" fill="#c9922a" text-anchor="middle" dominant-baseline="central" x="60" y="20">N</text>
+  <text font-family="serif" font-size="11" font-weight="700" fill="#f5ead8" text-anchor="middle" dominant-baseline="central" x="60" y="102">S</text>
+  <text font-family="serif" font-size="11" font-weight="700" fill="#f5ead8" text-anchor="middle" dominant-baseline="central" x="102" y="60">E</text>
+  <text font-family="serif" font-size="11" font-weight="700" fill="#f5ead8" text-anchor="middle" dominant-baseline="central" x="18" y="60">O</text>
+
+  <!-- Degree ticks -->
+  <g stroke="#c9922a" stroke-width="1" opacity="0.4">
+    <line x1="60" y1="24" x2="60" y2="30"/>
+    <line x1="60" y1="90" x2="60" y2="96"/>
+    <line x1="24"  y1="60" x2="30" y2="60"/>
+    <line x1="90"  y1="60" x2="96" y2="60"/>
+  </g>
+  <g stroke="#c9922a" stroke-width="0.5" opacity="0.25">
+    <line x1="79.3" y1="26.7" x2="76.6" y2="31.4"/>
+    <line x1="40.7" y1="26.7" x2="43.4" y2="31.4"/>
+    <line x1="93.3" y1="40.7" x2="88.6" y2="43.4"/>
+    <line x1="93.3" y1="79.3" x2="88.6" y2="76.6"/>
+    <line x1="79.3" y1="93.3" x2="76.6" y2="88.6"/>
+    <line x1="40.7" y1="93.3" x2="43.4" y2="88.6"/>
+    <line x1="26.7" y1="79.3" x2="31.4" y2="76.6"/>
+    <line x1="26.7" y1="40.7" x2="31.4" y2="43.4"/>
+  </g>
+
+  <!-- Cross hairs -->
+  <line x1="60" y1="32" x2="60" y2="88" stroke="#f5ead8" stroke-width="0.5" opacity="0.1"/>
+  <line x1="32" y1="60" x2="88" y2="60" stroke="#f5ead8" stroke-width="0.5" opacity="0.1"/>
+
+  <!-- North needle (gold) -->
+  <path d="M60 60 L56 40 L60 34 L64 40Z" fill="#c9922a"/>
+  <path d="M60 60 L56 40 L60 44Z" fill="#a07018"/>
+  <!-- South needle (dark) -->
+  <path d="M60 60 L56 80 L60 86 L64 80Z" fill="#1a4a6b"/>
+  <path d="M60 60 L56 80 L60 76Z" fill="#112d45"/>
+
+  <!-- Center jewel -->
+  <circle cx="60" cy="60" r="5" fill="#c9922a"/>
+  <circle cx="60" cy="60" r="3" fill="#f0bc5e"/>
+  <circle cx="59" cy="59" r="1" fill="white" opacity="0.5"/>
+
+  <!-- Outer decorative screws -->
+  <circle cx="60" cy="7" r="3" fill="#c9922a" opacity="0.7"/>
+  <circle cx="60" cy="113" r="3" fill="#c9922a" opacity="0.7"/>
+  <circle cx="7" cy="60" r="3" fill="#c9922a" opacity="0.7"/>
+  <circle cx="113" cy="60" r="3" fill="#c9922a" opacity="0.7"/>
+</svg>
+{{/if}}
+
+{{#if (eq type "anchor")}}
+{{!-- =====================================================
+     ANCHOR ILLUSTRATION
+====================================================== --}}
+<svg
+  class="illustration illustration--anchor"
+  width="{{#if width}}{{width}}{{else}}80{{/if}}"
+  height="{{#if height}}{{height}}{{else}}100{{/if}}"
+  viewBox="0 0 80 100"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-label="Ancre de marine"
+  role="img"
+>
+  <!-- Anchor ring at top -->
+  <circle cx="40" cy="12" r="9" stroke="#c9922a" stroke-width="3" fill="none"/>
+  <!-- Crossbar -->
+  <line x1="14" y1="26" x2="66" y2="26" stroke="#c9922a" stroke-width="4" stroke-linecap="round"/>
+  <!-- Crossbar knobs -->
+  <circle cx="14" cy="26" r="4" fill="#c9922a"/>
+  <circle cx="66" cy="26" r="4" fill="#c9922a"/>
+
+  <!-- Main shaft -->
+  <line x1="40" y1="18" x2="40" y2="86" stroke="#c9922a" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Stock circle -->
+  <circle cx="40" cy="28" r="6" fill="#0d1b2a" stroke="#c9922a" stroke-width="2"/>
+
+  <!-- Flukes -->
+  <path d="M40 86 Q22 72 18 60 Q16 50 24 46 Q32 42 34 52 L40 70Z" fill="#c9922a"/>
+  <path d="M40 86 Q58 72 62 60 Q64 50 56 46 Q48 42 46 52 L40 70Z" fill="#c9922a"/>
+  <!-- Fluke details -->
+  <path d="M40 86 Q22 72 18 60" stroke="#a07018" stroke-width="1.5" fill="none"/>
+  <path d="M40 86 Q58 72 62 60" stroke="#a07018" stroke-width="1.5" fill="none"/>
+
+  <!-- Chain links -->
+  <ellipse cx="40" cy="10" rx="5" ry="3" stroke="#f5ead8" stroke-width="1.5" fill="none" opacity="0.4"/>
+  <ellipse cx="40" cy="6" rx="3" ry="5" stroke="#f5ead8" stroke-width="1.5" fill="none" opacity="0.4"/>
+  <ellipse cx="40" cy="2" rx="5" ry="3" stroke="#f5ead8" stroke-width="1.5" fill="none" opacity="0.3"/>
+</svg>
+{{/if}}
+
+{{#if (eq type "waves-hero")}}
+{{!-- =====================================================
+     ANIMATED HERO OCEAN WAVES
+====================================================== --}}
+<svg
+  class="illustration illustration--waves"
+  width="100%"
+  viewBox="0 0 1440 180"
+  preserveAspectRatio="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+  role="presentation"
+>
+  <defs>
+    <linearGradient id="waveDeep" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a4a6b" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#0a0e1a" stop-opacity="1"/>
+    </linearGradient>
+    <linearGradient id="waveMid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a4a6b" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#112d45" stop-opacity="0.8"/>
+    </linearGradient>
+    <!-- Foam sparkle -->
+    <radialGradient id="foam" cx="50%" cy="0%" r="50%">
+      <stop offset="0%" stop-color="#f5ead8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#f5ead8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Back wave -->
+  <path
+    d="M0 90 C120 70,240 110,360 90 C480 70,600 110,720 90 C840 70,960 110,1080 90 C1200 70,1320 110,1440 90 L1440 180 L0 180Z"
+    fill="url(#waveDeep)"
+    opacity="0.6"
+  >
+    <animateTransform attributeName="transform" type="translate" from="0 0" to="-180 0" dur="8s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Mid wave -->
+  <path
+    d="M0 110 C180 90,360 130,540 110 C720 90,900 130,1080 110 C1260 90,1380 120,1440 110 L1440 180 L0 180Z"
+    fill="url(#waveMid)"
+    opacity="0.7"
+  >
+    <animateTransform attributeName="transform" type="translate" from="-180 0" to="0 0" dur="6s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Front wave -->
+  <path
+    d="M0 130 C240 110,480 150,720 130 C960 110,1200 150,1440 130 L1440 180 L0 180Z"
+    fill="#0a0e1a"
+    opacity="0.9"
+  >
+    <animateTransform attributeName="transform" type="translate" from="0 0" to="-120 0" dur="4s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Foam crests -->
+  <ellipse cx="180" cy="112" rx="40" ry="6" fill="url(#foam)"/>
+  <ellipse cx="540" cy="92" rx="50" ry="6" fill="url(#foam)"/>
+  <ellipse cx="900" cy="112" rx="45" ry="6" fill="url(#foam)"/>
+  <ellipse cx="1260" cy="92" rx="40" ry="6" fill="url(#foam)"/>
+
+  <!-- Gold shimmer on crests -->
+  <path d="M140 115 Q180 108 220 115" stroke="#c9922a" stroke-width="1" fill="none" opacity="0.25"/>
+  <path d="M500 95 Q540 88 580 95" stroke="#c9922a" stroke-width="1" fill="none" opacity="0.25"/>
+  <path d="M860 115 Q900 108 940 115" stroke="#c9922a" stroke-width="1" fill="none" opacity="0.25"/>
+</svg>
+{{/if}}
+
+{{#if (eq type "wanted-poster-frame")}}
+{{!-- =====================================================
+     WANTED POSTER DECORATIVE FRAME
+====================================================== --}}
+<svg
+  class="illustration illustration--wanted-frame"
+  width="{{#if width}}{{width}}{{else}}280{{/if}}"
+  height="{{#if height}}{{height}}{{else}}360{{/if}}"
+  viewBox="0 0 280 360"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-label="Cadre d'avis de recherche"
+  role="img"
+>
+  <!-- Aged parchment background -->
+  <rect x="6" y="6" width="268" height="348" rx="4" fill="#c9922a" opacity="0.15"/>
+  <rect x="4" y="4" width="272" height="352" rx="6" fill="#e8d5b0"/>
+
+  <!-- Outer ornamental border -->
+  <rect x="4" y="4" width="272" height="352" rx="6" fill="none" stroke="#8b5e1a" stroke-width="3"/>
+  <rect x="10" y="10" width="260" height="340" rx="4" fill="none" stroke="#8b5e1a" stroke-width="1.5"/>
+  <rect x="14" y="14" width="252" height="332" rx="3" fill="none" stroke="#a07018" stroke-width="0.5"/>
+
+  <!-- Corner ornaments -->
+  <!-- Top-left -->
+  <path d="M14 14 L40 14 L40 18 L18 18 L18 40 L14 40Z" fill="#8b5e1a" opacity="0.7"/>
+  <circle cx="14" cy="14" r="4" fill="#c9922a"/>
+  <!-- Top-right -->
+  <path d="M266 14 L240 14 L240 18 L262 18 L262 40 L266 40Z" fill="#8b5e1a" opacity="0.7"/>
+  <circle cx="266" cy="14" r="4" fill="#c9922a"/>
+  <!-- Bottom-left -->
+  <path d="M14 346 L40 346 L40 342 L18 342 L18 320 L14 320Z" fill="#8b5e1a" opacity="0.7"/>
+  <circle cx="14" cy="346" r="4" fill="#c9922a"/>
+  <!-- Bottom-right -->
+  <path d="M266 346 L240 346 L240 342 L262 342 L262 320 L266 320Z" fill="#8b5e1a" opacity="0.7"/>
+  <circle cx="266" cy="346" r="4" fill="#c9922a"/>
+
+  <!-- WANTED header area -->
+  <rect x="20" y="20" width="240" height="54" rx="2" fill="#8b5e1a" opacity="0.15"/>
+  <text
+    font-family="'Georgia', serif"
+    font-size="38"
+    font-weight="900"
+    fill="#5c3d10"
+    text-anchor="middle"
+    letter-spacing="6"
+    x="140" y="58"
+  >WANTED</text>
+  <!-- DEAD OR ALIVE -->
+  <text
+    font-family="'Georgia', serif"
+    font-size="10"
+    fill="#8b5e1a"
+    text-anchor="middle"
+    letter-spacing="4"
+    x="140" y="76"
+  >DEAD OR ALIVE</text>
+
+  <!-- Photo area placeholder -->
+  <rect x="30" y="84" width="220" height="170" rx="2" fill="#c9b28a" opacity="0.4" stroke="#8b5e1a" stroke-width="1"/>
+  <!-- Crosshatch texture in photo area -->
+  <path d="M30 100 L46 84 M30 120 L66 84 M30 140 L86 84 M30 160 L106 84 M30 180 L126 84 M30 200 L146 84 M30 220 L166 84 M30 240 L186 84 M30 254 L206 84 M46 254 L226 84 M66 254 L246 84 M86 254 L250 102 M106 254 L250 122 M126 254 L250 142 M146 254 L250 162 M166 254 L250 182 M186 254 L250 202 M206 254 L250 222 M226 254 L250 242" stroke="#8b5e1a" stroke-width="0.3" opacity="0.15"/>
+
+  <!-- BOUNTY label -->
+  <text
+    font-family="'Georgia', serif"
+    font-size="11"
+    fill="#5c3d10"
+    text-anchor="middle"
+    letter-spacing="3"
+    x="140" y="278"
+  >BOUNTY:</text>
+
+  <!-- Bounty amount placeholder -->
+  <text
+    font-family="'Georgia', serif"
+    font-size="26"
+    font-weight="700"
+    fill="#5c3d10"
+    text-anchor="middle"
+    x="140" y="308"
+  >3.000.000.000</text>
+  <text
+    font-family="'Georgia', serif"
+    font-size="11"
+    fill="#8b5e1a"
+    text-anchor="middle"
+    letter-spacing="2"
+    x="140" y="325"
+  >BERRY ฿</text>
+
+  <!-- Footer line -->
+  <line x1="24" y1="336" x2="256" y2="336" stroke="#8b5e1a" stroke-width="0.5" opacity="0.5"/>
+  <text
+    font-family="'Georgia', serif"
+    font-size="7"
+    fill="#8b5e1a"
+    text-anchor="middle"
+    letter-spacing="1"
+    x="140" y="348"
+    opacity="0.6"
+  >GOUVERNEMENT MONDIAL — MARINE</text>
+
+  <!-- Aged spots / distress -->
+  <circle cx="45" cy="160" r="3" fill="#8b5e1a" opacity="0.08"/>
+  <circle cx="230" cy="200" r="2" fill="#8b5e1a" opacity="0.1"/>
+  <circle cx="60" cy="300" r="4" fill="#8b5e1a" opacity="0.07"/>
+  <circle cx="200" cy="130" r="2.5" fill="#8b5e1a" opacity="0.09"/>
+</svg>
+{{/if}}
+
+{{#if (eq type "map-ornament")}}
+{{!-- =====================================================
+     OLD MAP DECORATIVE ORNAMENT (compass rose)
+====================================================== --}}
+<svg
+  class="illustration illustration--map-ornament"
+  width="{{#if width}}{{width}}{{else}}140{{/if}}"
+  height="{{#if height}}{{height}}{{else}}140{{/if}}"
+  viewBox="0 0 140 140"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-label="Rose des vents décorative"
+  role="img"
+>
+  <!-- Outer circle -->
+  <circle cx="70" cy="70" r="66" stroke="#c9922a" stroke-width="1" opacity="0.3" fill="none"/>
+  <circle cx="70" cy="70" r="60" stroke="#c9922a" stroke-width="0.5" opacity="0.2" fill="none"/>
+
+  <!-- 16-point star base (fine lines) -->
+  <g opacity="0.2" stroke="#c9922a" stroke-width="0.5">
+    <line x1="70" y1="10" x2="70" y2="130"/>
+    <line x1="10" y1="70" x2="130" y2="70"/>
+    <line x1="27.6" y1="27.6" x2="112.4" y2="112.4"/>
+    <line x1="112.4" y1="27.6" x2="27.6" y2="112.4"/>
+    <line x1="19.3" y1="48.5" x2="120.7" y2="91.5"/>
+    <line x1="48.5" y1="19.3" x2="91.5" y2="120.7"/>
+    <line x1="19.3" y1="91.5" x2="120.7" y2="48.5"/>
+    <line x1="91.5" y1="19.3" x2="48.5" y2="120.7"/>
+  </g>
+
+  <!-- 8 primary points -->
+  <!-- North (gold, large) -->
+  <path d="M70 70 L64 46 L70 10 L76 46Z" fill="#c9922a"/>
+  <path d="M70 70 L64 46 L70 50Z" fill="#a07018"/>
+  <!-- South -->
+  <path d="M70 70 L64 94 L70 130 L76 94Z" fill="#c9922a" opacity="0.7"/>
+  <!-- East -->
+  <path d="M70 70 L94 64 L130 70 L94 76Z" fill="#c9922a" opacity="0.7"/>
+  <!-- West -->
+  <path d="M70 70 L46 64 L10 70 L46 76Z" fill="#c9922a" opacity="0.7"/>
+
+  <!-- Diagonal points (shorter) -->
+  <path d="M70 70 L55 55 L30 30 L55 70Z" fill="#c9922a" opacity="0.4"/>
+  <path d="M70 70 L85 55 L110 30 L70 55Z" fill="#c9922a" opacity="0.4"/>
+  <path d="M70 70 L55 85 L30 110 L70 85Z" fill="#c9922a" opacity="0.4"/>
+  <path d="M70 70 L85 85 L110 110 L70 85Z" fill="#c9922a" opacity="0.4"/>
+
+  <!-- Inner ring -->
+  <circle cx="70" cy="70" r="22" fill="#0d1b2a" stroke="#c9922a" stroke-width="1.5"/>
+  <circle cx="70" cy="70" r="18" fill="#112d45" stroke="#c9922a" stroke-width="0.5" opacity="0.6"/>
+
+  <!-- N label -->
+  <text font-family="serif" font-size="10" font-weight="700" fill="#c9922a" text-anchor="middle" dominant-baseline="central" x="70" y="56">N</text>
+
+  <!-- Center -->
+  <circle cx="70" cy="70" r="5" fill="#c9922a"/>
+  <circle cx="70" cy="70" r="2.5" fill="#ffd97a"/>
+</svg>
+{{/if}}
+
+{{#if (eq type "sea-king")}}
+{{!-- =====================================================
+     SEA KING — Simplified serpent silhouette
+====================================================== --}}
+<svg
+  class="illustration illustration--sea-king"
+  width="{{#if width}}{{width}}{{else}}300{{/if}}"
+  height="{{#if height}}{{height}}{{else}}160{{/if}}"
+  viewBox="0 0 300 160"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-label="Roi des mers — créature des abysses"
+  role="img"
+>
+  <!-- Ocean surface -->
+  <path d="M0 100 Q75 88 150 100 Q225 112 300 100 L300 160 L0 160Z" fill="#112d45" opacity="0.7"/>
+  <path d="M0 110 Q75 98 150 110 Q225 122 300 110 L300 160 L0 160Z" fill="#0d1b2a" opacity="0.9"/>
+
+  <!-- Body coils emerging from water -->
+  <!-- Rear coil -->
+  <path d="M220 130 Q240 80 260 95 Q280 110 270 130" stroke="#1a4a6b" stroke-width="18" fill="none" stroke-linecap="round"/>
+  <path d="M220 130 Q240 80 260 95 Q280 110 270 130" stroke="#112d45" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <!-- Scale detail on rear coil -->
+  <path d="M220 130 Q240 80 260 95 Q280 110 270 130" stroke="#1a4a6b" stroke-width="12" fill="none" stroke-linecap="round" stroke-dasharray="8 4"/>
+
+  <!-- Mid body -->
+  <path d="M60 120 Q100 40 140 70 Q170 92 160 120" stroke="#1a4a6b" stroke-width="22" fill="none" stroke-linecap="round"/>
+  <path d="M60 120 Q100 40 140 70 Q170 92 160 120" stroke="#0f2e48" stroke-width="18" fill="none" stroke-linecap="round"/>
+
+  <!-- Head / neck -->
+  <path d="M14 108 Q30 50 70 58" stroke="#1a4a6b" stroke-width="26" fill="none" stroke-linecap="round"/>
+  <path d="M14 108 Q30 50 70 58" stroke="#0d1b2a" stroke-width="22" fill="none" stroke-linecap="round"/>
+
+  <!-- Head shape -->
+  <ellipse cx="84" cy="58" rx="28" ry="20" fill="#1a4a6b"/>
+  <ellipse cx="84" cy="56" rx="26" ry="17" fill="#112d45"/>
+
+  <!-- Snout / jaw -->
+  <path d="M60 62 Q84 78 108 62" fill="#0d1b2a"/>
+  <path d="M64 60 Q84 72 104 60" fill="#1a4a6b"/>
+
+  <!-- Eye (glowing) -->
+  <circle cx="96" cy="52" r="7" fill="#c9922a" opacity="0.9"/>
+  <circle cx="96" cy="52" r="4.5" fill="#1a1a2e"/>
+  <circle cx="96" cy="52" r="2.5" fill="#f0bc5e" opacity="0.8"/>
+  <circle cx="94.5" cy="50.5" r="1" fill="white" opacity="0.6"/>
+
+  <!-- Frill / fin on head -->
+  <path d="M70 44 Q80 30 88 40 Q82 34 76 44" fill="#1a4a6b" opacity="0.8"/>
+  <path d="M76 42 Q86 26 94 36 Q88 30 82 42" fill="#1a4a6b" opacity="0.6"/>
+
+  <!-- Horns -->
+  <path d="M78 42 Q74 24 80 18 Q82 30 86 40" fill="#c9922a" opacity="0.4"/>
+
+  <!-- Teeth -->
+  <path d="M66 66 L70 74 L74 66" fill="#e8d5b0" opacity="0.5"/>
+  <path d="M76 69 L80 78 L84 69" fill="#e8d5b0" opacity="0.4"/>
+  <path d="M88 68 L92 76 L96 68" fill="#e8d5b0" opacity="0.4"/>
+
+  <!-- Water splash around emergence -->
+  <path d="M50 106 Q44 90 56 95 Q46 96 50 106" fill="#1a4a6b" opacity="0.4"/>
+  <path d="M130 110 Q138 94 144 100 Q134 98 130 110" fill="#1a4a6b" opacity="0.3"/>
+
+  <!-- Deep body fading into water -->
+  <path d="M170 130 Q200 100 220 115" stroke="#1a4a6b" stroke-width="16" fill="none" stroke-linecap="round"/>
+  <path d="M170 130 Q200 100 220 115" stroke="#0d1b2a" stroke-width="12" fill="none" stroke-linecap="round"/>
+
+  <!-- Scales texture on visible body -->
+  <path d="M60 120 Q100 40 140 70" stroke="#1a4a6b" stroke-width="8" fill="none" stroke-dasharray="6 6" opacity="0.3"/>
+</svg>
+{{/if}}

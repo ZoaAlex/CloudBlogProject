@@ -1,0 +1,99 @@
+{{!-- error-404.hbs — 404 Not Found page --}}
+{{!< default}}
+
+<div style="
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-xl) var(--space-md);
+  position: relative;
+  overflow: hidden;
+">
+
+  {{!-- Sea King faded background --}}
+  <div aria-hidden="true" style="
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0.08;
+    pointer-events: none;
+  ">
+    {{> "illustrations" type="sea-king" width="100%" height="300"}}
+  </div>
+
+  {{!-- Map ornament background --}}
+  <div aria-hidden="true" style="
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0.05;
+    pointer-events: none;
+  ">
+    {{> "illustrations" type="map-ornament" width="400" height="400"}}
+  </div>
+
+  <div style="position:relative; z-index:1;">
+
+    {{!-- Jolly Roger --}}
+    <div class="float-anchor" style="margin-bottom: var(--space-md);">
+      {{> "illustrations" type="jolly-roger" width="140" height="140"}}
+    </div>
+
+    <p style="
+      font-family: var(--font-heading);
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+      margin-bottom: var(--space-sm);
+    ">Île inconnue — Erreur 404</p>
+
+    <h1 style="
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 10vw, 8rem);
+      color: var(--color-white);
+      line-height: 1;
+      margin-bottom: var(--space-sm);
+      text-shadow: 0 0 60px rgba(201,146,42,0.2);
+    ">404</h1>
+
+    <p style="
+      font-size: clamp(1rem,2.5vw,1.3rem);
+      color: var(--color-parchment);
+      opacity: 0.75;
+      max-width: 500px;
+      margin: 0 auto var(--space-lg);
+      font-style: italic;
+      line-height: 1.8;
+    ">
+      Cette île n'existe pas sur la carte du Grand Line.<br>
+      Peut-être a-t-elle été emportée par Kaido, ou bien les Dendens ont mal transmis la route ?
+    </p>
+
+    {{!-- Compass decoration --}}
+    <div aria-hidden="true" style="margin: var(--space-sm) auto; opacity: 0.6;">
+      {{> "illustrations" type="compass" width="70" height="70"}}
+    </div>
+
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:var(--space-md);">
+      <a href="{{@site.url}}" class="hero-cta">
+        ⛵ Retour à la base
+      </a>
+      <a href="{{@site.url}}/tag/arcs/" style="
+        display:inline-flex;align-items:center;gap:0.5rem;
+        padding:0.9rem 2rem;
+        border:1px solid rgba(201,146,42,0.35);
+        border-radius:4px;
+        font-family:var(--font-heading);
+        font-size:0.78rem;font-weight:600;letter-spacing:0.12em;
+        text-transform:uppercase;color:var(--color-gold-light);
+        transition:all 0.3s;
+      ">📖 Explorer les arcs</a>
+    </div>
+  </div>
+</div>
