@@ -5,7 +5,7 @@ on:
     branches: [ "main" ] # Déclenche le build lors d'un push sur main
 
 env:
-  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_NAME }} # Nom du repository ECR défini dans les secrets GitHub
   IMAGE_TAG: ${{ github.sha }} 
   AWS_REGION: eu-north-1
   # Utilise le SHA du commit comme tag d'image
