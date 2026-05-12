@@ -14,7 +14,7 @@ content/themes/source/
 
 # Garder ton thème
 !content/themes/
-!content/themes/mon-theme/
+
 
 # Fichiers de log
 *.log
