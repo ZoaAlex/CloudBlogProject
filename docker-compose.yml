@@ -1,7 +1,8 @@
 services:
   blog:
-    image: ghost:5-alpine
-    container_name: ghost
+    build: .                   
+    image: ghost-custom:latest  
+    container_name: ghost_app
     restart: always
     ports:
       - "2368:2368"
