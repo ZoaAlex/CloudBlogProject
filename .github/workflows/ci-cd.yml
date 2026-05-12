@@ -5,7 +5,6 @@ on:
     branches: [ "main" ] # Déclenche le build lors d'un push sur main
 
 env:
-  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_NAME }} # Nom du repository ECR défini dans les secrets GitHub
   IMAGE_TAG: ${{ github.sha }} 
   AWS_REGION: eu-north-1
   # Utilise le SHA du commit comme tag d'image
@@ -14,6 +13,7 @@ jobs:
   deploy:
     name: Build and Push
     runs-on: ubuntu-latest
+    environment: aws_ecr_secret
 
     steps:
     - name: Checkout code
@@ -31,6 +31,7 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
+        
 
     # 2. Connexion à Amazon ECR
     - name: Login to Amazon ECR
