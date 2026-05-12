@@ -48,3 +48,26 @@ jobs:
         docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+    # Nouveau step — Deploy sur EC2
+    - name: Deploy on EC2
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_NAME }}
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ec2-user
+        key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+        envs: ECR_REGISTRY,ECR_REPOSITORY,AWS_REGION,IMAGE_TAG
+        script: |
+          # Authentification ECR depuis l'instance
+          aws ecr get-login-password --region $AWS_REGION | \
+            docker login --username AWS --password-stdin $ECR_REGISTRY
+
+          # Pull de la nouvelle image
+          docker pull $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+          # Redémarrage du conteneur
+          docker compose down
+          docker compose up -d
