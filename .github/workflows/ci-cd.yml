@@ -84,6 +84,8 @@ jobs:
             'bash -s' << 'ENDSSH'
               # Recrée le .env
               cat > /home/ec2-user/.env << 'ENDENV'
+        ECR_REGISTRY=${{ env.ECR_REGISTRY }}
+        ECR_REPOSITORY=${{ secrets.ECR_REPOSITORY_NAME }}
         MYSQL_DATABASE=${{ vars.MYSQL_DATABASE }}
         MYSQL_USER=${{ vars.MYSQL_USER }}
         MYSQL_PASSWORD=${{ vars.MYSQL_PASSWORD }}

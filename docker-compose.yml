@@ -1,9 +1,8 @@
 
 
 services:
-  blog:
-    build: .                   
-    image: ghost-custom:latest  
+  blog:                   
+    image: ${ECR_REGISTRY}/${ECR_REPOSITORY}:latest 
     container_name: ghost_app
     restart: always
     ports:
