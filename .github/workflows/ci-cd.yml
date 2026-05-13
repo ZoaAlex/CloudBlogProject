@@ -51,27 +51,35 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
+    - name: Setup SSH key
+      run: |
+        echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" | base64 -d > /tmp/ssh_key
+        cat /tmp/ssh_key
+        chmod 600 /tmp/ssh_key
+
+        
      # Copie uniquement le docker-compose.yml sur l'instance
     - name: Copy docker-compose to EC2
       uses: appleboy/scp-action@v0.1.7
       with:
         host: ${{ secrets.EC2_HOST }}
-        username: ec2-user
+        username: root
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         source: "docker-compose.yml"
-        target: "/home/ec2-user/"
+        target: "/home/root/"
 
+    
     - name: Deploy on EC2
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.EC2_HOST }}
         username: root
-        key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+        key_path: /tmp/ssh_key
         command_timeout: 5m
         envs: ECR_REGISTRY,ECR_REPOSITORY,AWS_REGION,IMAGE_TAG,MYSQL_DATABASE,MYSQL_USER,MYSQL_PASSWORD,MYSQL_ROOT_PASSWORD,GHOST_URL
         script: |
           # Recrée le .env
-          cat > /home/ec2-user/.env << EOF
+          cat > /home/root/.env << EOF
           MYSQL_DATABASE=$MYSQL_DATABASE
           MYSQL_USER=$MYSQL_USER
           MYSQL_PASSWORD=$MYSQL_PASSWORD
