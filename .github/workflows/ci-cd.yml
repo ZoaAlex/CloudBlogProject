@@ -61,21 +61,18 @@ jobs:
     - name: Setup SSH
       run: |
         mkdir -p ~/.ssh
-        printf '%s\n' "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+        echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" | base64 -d > ~/.ssh/deploy_key
         chmod 600 ~/.ssh/deploy_key
-        ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-    - name: Debug key format
-      run: |
-        printf '%s\n' "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
-        chmod 600 ~/.ssh/deploy_key
+        # Vérifie que la clé est bien sur plusieurs lignes
         cat -A ~/.ssh/deploy_key | head -5
+        ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
     - name: Copy docker-compose to EC2
       run: |
         scp -i ~/.ssh/deploy_key \
-          -o StrictHostKeyChecking=no \
-          docker-compose.yml \
-          ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
+            -o StrictHostKeyChecking=no \
+            docker-compose.yml \
+            ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
 
     - name: Deploy on EC2
       run: |
@@ -83,13 +80,14 @@ jobs:
             -o StrictHostKeyChecking=no \
             ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
           cat > /home/ec2-user/.env << ENVEOF
-          MYSQL_DATABASE=${{ env.MYSQL_DATABASE }}
-          MYSQL_USER=${{ env.MYSQL_USER }}
-          MYSQL_PASSWORD=${{ env.MYSQL_PASSWORD }}
-          MYSQL_ROOT_PASSWORD=${{ env.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}
+          MYSQL_USER=${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}
+          GHOST_URL=${{ secrets.GHOST_URL }}
           ENVEOF
           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | \
-            docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY_NAME }}
+            docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
           docker pull ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
           docker compose down
           docker compose up -d
