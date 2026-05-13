@@ -51,15 +51,12 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
-    - name: test SSH key
+    - name: Debug SSH key
       run: |
-        mkdir -p ~/.ssh
-        printf '%s' "${{ secrets.EC2_SSH_PRIVATE_KEY }}" | base64 -d > ~/.ssh/github-actions-key
-        chmod 600 ~/.ssh/github-actions-key
-        cat ~/.ssh/github-actions-key
-        ssh-keygen -l -f ~/.ssh/github-actions-key
-
-        
+        echo "Longueur du secret:"
+        echo -n "${{ secrets.EC2_SSH_PRIVATE_KEY }}" | wc -c
+        echo "Premières lignes:"
+        echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" | head -3    
      # Copie uniquement le docker-compose.yml sur l'instance
     - name: Copy docker-compose to EC2
       uses: appleboy/scp-action@v0.1.7
@@ -69,6 +66,8 @@ jobs:
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         source: "docker-compose.yml"
         target: "/home/root/"
+       
+  
 
     
     - name: Deploy on EC2
