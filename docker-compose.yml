@@ -24,7 +24,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-
   db:
     image: mysql:8.0-oracle
     container_name: ghost_db
