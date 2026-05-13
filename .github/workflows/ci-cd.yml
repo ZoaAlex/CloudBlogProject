@@ -54,9 +54,9 @@ jobs:
     - name: Setup SSH key
       run: |
         mkdir -p ~/.ssh
-        printf '%s' "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/github-actions-key
+        printf '%s' "${{ secrets.EC2_SSH_PRIVATE_KEY }}" | base64 -d > ~/.ssh/github-actions-key
         chmod 600 ~/.ssh/github-actions-key
-        ls -la ~/.ssh/github-actions-key
+        cat ~/.ssh/github-actions-key
         ssh-keygen -l -f ~/.ssh/github-actions-key
 
         
