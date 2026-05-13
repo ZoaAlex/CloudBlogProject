@@ -93,11 +93,11 @@ jobs:
         ENDENV
 
               # Authentification ECR
-              aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | \
-                docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
+              sudo aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | \
+               sudo docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
 
               # Pull et redémarrage
-              docker pull ${{ env.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
-              cd /home/ec2-user && docker compose down
-              cd /home/ec2-user && docker compose up -d
+              sudo docker pull ${{ env.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
+              sudo cd /home/ec2-user && sudo docker-compose down
+              sudo cd /home/ec2-user && sudo docker-compose up -d
         ENDSSH
