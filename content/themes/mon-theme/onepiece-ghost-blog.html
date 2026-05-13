@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nakama Chronicle — Le blog des personnages de One Piece</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0d1b2a;
+    --deep: #0a1520;
+    --gold: #c9922a;
+    --gold-light: #e8b84b;
+    --gold-pale: #f5d98a;
+    --crimson: #b52a2a;
+    --sky: #1a6fa8;
+    --sky-light: #3a9fd4;
+    --sand: #f2e8d5;
+    --sand-dark: #d9cbb0;
+    --ink: #1a1209;
+    --mist: rgba(201,146,42,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Crimson Pro', Georgia, serif;
+    background: var(--navy);
+    color: var(--sand);
+    overflow-x: hidden;
+    font-size: 18px;
+    line-height: 1.7;
+  }
+
+  /* ── HERO ─────────────────────────────────────── */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 640px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--deep);
+  }
+
+  .hero-ocean {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 80%, rgba(26,111,168,0.35) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 20% 50%, rgba(181,42,42,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 80% 30%, rgba(201,146,42,0.12) 0%, transparent 60%),
+      linear-gradient(180deg, #060d14 0%, #0a1520 40%, #0d1b2a 100%);
+  }
+
+  /* Animated waves */
+  .waves {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 200%;
+    height: 180px;
+    animation: drift 14s linear infinite;
+  }
+  .waves path { fill: rgba(26,111,168,0.18); }
+  .waves.w2 { animation-delay: -5s; animation-duration: 10s; }
+  .waves.w2 path { fill: rgba(13,27,42,0.6); }
+
+  @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  .stars {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 15% 12%, rgba(245,217,138,0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 72% 8%, rgba(245,217,138,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 25%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 88% 18%, rgba(245,217,138,0.8) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 6%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 42% 35%, rgba(245,217,138,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 5% 45%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 95% 40%, rgba(245,217,138,0.6) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 63% 22%, rgba(255,255,255,0.6) 0%, transparent 100%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .site-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0.85;
+  }
+
+  .site-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(2.4rem, 7vw, 5rem);
+    font-weight: 900;
+    color: var(--gold-pale);
+    line-height: 1.1;
+    text-shadow:
+      0 0 60px rgba(201,146,42,0.4),
+      0 2px 8px rgba(0,0,0,0.8);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.04em;
+  }
+
+  .site-sub {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(0.75rem, 2vw, 1rem);
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    opacity: 0.7;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-divider {
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 2.5rem;
+  }
+
+  .hero-desc {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--sand-dark);
+    max-width: 520px;
+    margin: 0 auto 3rem;
+    line-height: 1.8;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: var(--gold);
+    opacity: 0.5;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    animation: bob 2.5s ease-in-out infinite;
+  }
+  .scroll-hint svg { width: 16px; height: 16px; }
+  @keyframes bob { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
+
+  /* ── NAV ──────────────────────────────────────── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,21,32,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201,146,42,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 2.5rem;
+  }
+
+  .nav-brand {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.95rem;
+    color: var(--gold-pale);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sand-dark);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold-light); }
+
+  .nav-tag {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    border: 1px solid rgba(201,146,42,0.35);
+    padding: 4px 12px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ── FEATURED BAND ────────────────────────────── */
+  .featured-band {
+    background: rgba(201,146,42,0.06);
+    border-top: 1px solid rgba(201,146,42,0.15);
+    border-bottom: 1px solid rgba(201,146,42,0.15);
+    padding: 0.6rem 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    overflow: hidden;
+  }
+  .featured-label {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .featured-ticker {
+    font-size: 13px;
+    color: var(--sand-dark);
+    font-style: italic;
+    white-space: nowrap;
+    animation: ticker 28s linear infinite;
+  }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-60%); } }
+
+  /* ── MAIN LAYOUT ──────────────────────────────── */
+  .site-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+  .section-rule {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(201,146,42,0.4), transparent);
+  }
+
+  /* ── HERO ARTICLE (featured) ──────────────────── */
+  .post-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid rgba(201,146,42,0.2);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 3rem;
+    min-height: 420px;
+  }
+
+  .post-hero-art {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .post-hero-art svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .post-hero-body {
+    padding: 3rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(13,27,42,0.98) 0%, rgba(10,21,32,0.98) 100%);
+    border-left: 1px solid rgba(201,146,42,0.15);
+  }
+
+  .post-category {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .post-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--sand);
+    line-height: 1.25;
+    margin-bottom: 1rem;
+  }
+
+  .post-excerpt {
+    font-size: 1rem;
+    color: var(--sand-dark);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: rgba(217,203,176,0.5);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .post-meta-dot { opacity: 0.4; }
+
+  .btn-read {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-pale);
+    border: 1px solid rgba(201,146,42,0.4);
+    padding: 0.7rem 1.5rem;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: all 0.25s;
+    width: fit-content;
+    cursor: pointer;
+    background: transparent;
+  }
+  .btn-read:hover {
+    background: rgba(201,146,42,0.1);
+    border-color: var(--gold);
+    color: var(--gold-pale);
+  }
+  .btn-read svg { width: 14px; height: 14px; transition: transform 0.2s; }
+  .btn-read:hover svg { transform: translateX(4px); }
+
+  /* ── CARD GRID ────────────────────────────────── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .card {
+    border: 1px solid rgba(201,146,42,0.15);
+    border-radius: 3px;
+    overflow: hidden;
+    background: rgba(13,27,42,0.6);
+    transition: border-color 0.25s, transform 0.25s;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    color: inherit;
+  }
+  .card:hover {
+    border-color: rgba(201,146,42,0.5);
+    transform: translateY(-3px);
+  }
+
+  .card-art {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+  }
+  .card-art svg { width: 100%; height: 100%; }
+
+  .card-body { padding: 1.25rem 1.25rem 1.5rem; }
+
+  .card-cat {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+    opacity: 0.8;
+  }
+
+  .card-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--sand);
+    line-height: 1.35;
+    margin-bottom: 0.6rem;
+  }
+
+  .card-excerpt {
+    font-size: 0.85rem;
+    color: var(--sand-dark);
+    line-height: 1.7;
+    opacity: 0.8;
+    font-style: italic;
+  }
+
+  .card-footer {
+    padding: 0 1.25rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(217,203,176,0.4);
+    border-top: 1px solid rgba(201,146,42,0.1);
+    padding-top: 0.75rem;
+  }
+
+  /* ── FACTION BANNER ───────────────────────────── */
+  .faction-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(201,146,42,0.15);
+    border: 1px solid rgba(201,146,42,0.15);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 4rem;
+  }
+
+  .faction-cell {
+    padding: 1.75rem 1.25rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-decoration: none;
+    display: block;
+  }
+  .faction-cell:hover { background: rgba(201,146,42,0.08); }
+
+  .faction-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 0.75rem;
+  }
+
+  .faction-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.25rem;
+  }
+
+  .faction-count {
+    font-size: 0.8rem;
+    color: var(--sand-dark);
+    opacity: 0.6;
+    font-style: italic;
+  }
+
+  /* ── SIDEBAR LAYOUT ───────────────────────────── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 3rem;
+    margin-bottom: 4rem;
+  }
+
+  /* ── ARTICLE FULL ─────────────────────────────── */
+  .article-full {
+    border: 1px solid rgba(201,146,42,0.15);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    background: rgba(13,27,42,0.5);
+  }
+  .article-full-art {
+    width: 100%;
+    height: 260px;
+    overflow: hidden;
+  }
+  .article-full-art svg { width: 100%; height: 100%; }
+  .article-full-body { padding: 2rem; }
+  .article-full-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--sand);
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+  }
+  .article-full-text {
+    font-size: 0.95rem;
+    line-height: 1.85;
+    color: var(--sand-dark);
+    margin-bottom: 1.25rem;
+  }
+  .article-full-text p { margin-bottom: 0.8rem; }
+  blockquote {
+    border-left: 3px solid var(--gold);
+    padding: 0.5rem 0 0.5rem 1.25rem;
+    font-style: italic;
+    color: var(--gold-pale);
+    font-size: 1.05rem;
+    margin: 1rem 0;
+  }
+
+  /* ── SIDEBAR ──────────────────────────────────── */
+  .sidebar-widget {
+    margin-bottom: 2rem;
+  }
+  .sidebar-widget-title {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(201,146,42,0.2);
+  }
+
+  .ranking-list { list-style: none; }
+  .ranking-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid rgba(201,146,42,0.08);
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .ranking-item:hover { opacity: 0.75; }
+  .ranking-num {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    opacity: 0.4;
+    width: 24px;
+    flex-shrink: 0;
+    text-align: center;
+  }
+  .ranking-info { flex: 1; }
+  .ranking-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    color: var(--sand);
+    font-weight: 600;
+  }
+  .ranking-sub {
+    font-size: 0.75rem;
+    color: var(--sand-dark);
+    opacity: 0.6;
+    font-style: italic;
+  }
+  .ranking-bounty {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    text-align: right;
+  }
+
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .tag {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sand-dark);
+    border: 1px solid rgba(201,146,42,0.2);
+    padding: 4px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .tag:hover {
+    color: var(--gold);
+    border-color: rgba(201,146,42,0.5);
+  }
+
+  .quote-widget {
+    border: 1px solid rgba(201,146,42,0.2);
+    border-radius: 3px;
+    padding: 1.25rem;
+    background: rgba(201,146,42,0.04);
+  }
+  .quote-text {
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--gold-pale);
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+  }
+  .quote-attr {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.7;
+  }
+
+  /* ── BOUNTY CARDS ─────────────────────────────── */
+  .bounty-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 4rem;
+  }
+
+  .bounty-card {
+    border: 1px solid rgba(201,146,42,0.2);
+    border-radius: 3px;
+    overflow: hidden;
+    background: linear-gradient(160deg, rgba(13,27,42,0.9), rgba(10,21,32,0.95));
+    text-align: center;
+  }
+
+  .bounty-header {
+    background: rgba(201,146,42,0.1);
+    border-bottom: 1px solid rgba(201,146,42,0.2);
+    padding: 0.4rem;
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .bounty-portrait {
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+  }
+  .bounty-portrait svg { width: 100%; height: 100%; }
+
+  .bounty-info { padding: 0.75rem; }
+  .bounty-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    color: var(--sand);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.2rem;
+  }
+  .bounty-title-text {
+    font-size: 0.65rem;
+    color: var(--sand-dark);
+    opacity: 0.6;
+    font-style: italic;
+    margin-bottom: 0.5rem;
+  }
+  .bounty-amount {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.75rem;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── FOOTER ───────────────────────────────────── */
+  footer {
+    border-top: 1px solid rgba(201,146,42,0.15);
+    padding: 3rem 2.5rem;
+    text-align: center;
+    background: var(--deep);
+  }
+  .footer-brand {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.25rem;
+    color: var(--gold-pale);
+    margin-bottom: 0.5rem;
+  }
+  .footer-tagline {
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--sand-dark);
+    opacity: 0.5;
+    margin-bottom: 1.5rem;
+  }
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    list-style: none;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .footer-links a { color: var(--sand-dark); text-decoration: none; opacity: 0.5; }
+  .footer-links a:hover { opacity: 1; color: var(--gold); }
+  .footer-copy {
+    font-size: 0.75rem;
+    color: var(--sand-dark);
+    opacity: 0.3;
+  }
+
+  /* Modal */
+  .modal-bg {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(6,13,20,0.92);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  .modal-bg.open { display: flex; }
+  .modal {
+    background: var(--navy);
+    border: 1px solid rgba(201,146,42,0.3);
+    border-radius: 4px;
+    max-width: 700px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(201,146,42,0.15);
+  }
+  .modal-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    color: var(--gold-pale);
+  }
+  .modal-close {
+    background: none;
+    border: none;
+    color: var(--sand-dark);
+    font-size: 1.4rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px 8px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+  .modal-close:hover { opacity: 1; }
+  .modal-art { width: 100%; height: 200px; overflow: hidden; }
+  .modal-art svg { width: 100%; height: 100%; }
+  .modal-body { padding: 1.5rem; }
+  .modal-body p { margin-bottom: 0.9rem; font-size: 0.95rem; color: var(--sand-dark); line-height: 1.85; }
+  .modal-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(201,146,42,0.12);
+    border: 1px solid rgba(201,146,42,0.12);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 1rem 0 1.25rem;
+  }
+  .modal-stat {
+    padding: 0.75rem;
+    text-align: center;
+    background: var(--navy);
+  }
+  .modal-stat-label {
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.7;
+    margin-bottom: 0.3rem;
+  }
+  .modal-stat-val {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    color: var(--sand);
+    font-weight: 600;
+  }
+
+  @media (max-width: 900px) {
+    .post-hero { grid-template-columns: 1fr; }
+    .card-grid { grid-template-columns: repeat(2, 1fr); }
+    .two-col { grid-template-columns: 1fr; }
+    .bounty-grid { grid-template-columns: repeat(2, 1fr); }
+    .faction-strip { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .card-grid { grid-template-columns: 1fr; }
+    .bounty-grid { grid-template-columns: repeat(2, 1fr); }
+    nav { padding: 0.75rem 1rem; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">Nakama Chronicle</a>
+  <ul class="nav-links">
+    <li><a href="#mugiwara">Mugiwara</a></li>
+    <li><a href="#factions">Factions</a></li>
+    <li><a href="#bounties">Primes</a></li>
+    <li><a href="#articles">Articles</a></li>
+  </ul>
+  <span class="nav-tag">Grand Line</span>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-ocean"></div>
+  <div class="stars"></div>
+
+  <!-- Decorative ship silhouette -->
+  <svg style="position:absolute;bottom:140px;left:50%;transform:translateX(-50%);width:220px;opacity:0.12" viewBox="0 0 220 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 70 Q110 20 200 70" stroke="#c9922a" stroke-width="1.5" fill="none"/>
+    <path d="M30 70 L50 30 L60 70" stroke="#c9922a" stroke-width="1" fill="rgba(201,146,42,0.3)"/>
+    <path d="M75 70 L100 20 L125 70" stroke="#c9922a" stroke-width="1" fill="rgba(201,146,42,0.3)"/>
+    <path d="M140 70 L155 35 L170 70" stroke="#c9922a" stroke-width="1" fill="rgba(201,146,42,0.3)"/>
+    <line x1="100" y1="20" x2="100" y2="70" stroke="#c9922a" stroke-width="0.8"/>
+    <circle cx="100" cy="16" r="4" fill="#c9922a" opacity="0.6"/>
+    <path d="M5 70 L215 70 Q180 85 110 87 Q60 88 5 70Z" fill="#c9922a" opacity="0.25"/>
+  </svg>
+
+  <!-- Wave SVGs -->
+  <svg class="waves" viewBox="0 0 1440 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 90 C180 40, 360 140, 540 90 S900 40, 1080 90 S1260 140, 1440 90 L1440 180 L0 180Z"/>
+  </svg>
+  <svg class="waves w2" viewBox="0 0 1440 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 110 C240 60, 480 160, 720 110 S960 60, 1200 110 L1440 100 L1440 180 L0 180Z"/>
+  </svg>
+
+  <div class="hero-content">
+    <p class="site-eyebrow">Le journal des mers du monde</p>
+    <h1 class="site-title">Nakama<br>Chronicle</h1>
+    <p class="site-sub">One Piece · Encyclopédie des personnages</p>
+    <div class="hero-divider"></div>
+    <p class="hero-desc">Explorez les destins, les pouvoirs et les secrets des pirates, marines et légendes qui peuplent le monde de One Piece.</p>
+    <a href="#articles" class="btn-read">
+      Commencer la lecture
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Naviguer</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+</header>
+
+<!-- TICKER -->
+<div class="featured-band">
+  <span class="featured-label">À la une</span>
+  <span class="featured-ticker">
+    ✦ Monkey D. Luffy — Le 5e Empereur des Mers — Prime : 3 000 000 000 de Berrys &nbsp;&nbsp;&nbsp;&nbsp;
+    ✦ Roronoa Zoro — Premier Épéiste du Nouveau Monde — Prime : 1 111 000 000 &nbsp;&nbsp;&nbsp;&nbsp;
+    ✦ Shanks le Roux — Yonko — Convoque le Gorosei à Marie Joie &nbsp;&nbsp;&nbsp;&nbsp;
+    ✦ Dracule Mihawk — Premier Épéiste du Monde — Rejoint les Corsaires &nbsp;&nbsp;&nbsp;&nbsp;
+    ✦ Nami — Navigatrice de l'équipage — Prime : 366 000 000 &nbsp;&nbsp;&nbsp;&nbsp;
+  </span>
+</div>
+
+<!-- MAIN -->
+<main id="articles" class="site-wrap">
+
+  <!-- FEATURED POST -->
+  <div class="section-head">
+    <span class="section-title">Article à la une</span>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="post-hero" onclick="openModal('luffy')">
+    <div class="post-hero-art">
+      <!-- Luffy illustrated art -->
+      <svg viewBox="0 0 600 420" xmlns="http://www.w3.org/2000/svg" style="background:#060d14">
+        <!-- sky & sea gradient -->
+        <defs>
+          <radialGradient id="sunG" cx="50%" cy="30%" r="60%">
+            <stop offset="0%" stop-color="#c9922a" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#060d14" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="gearG" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#e84040" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="#8b0000" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="600" height="420" fill="#060d14"/>
+        <!-- sun glow -->
+        <ellipse cx="300" cy="130" rx="200" ry="160" fill="url(#sunG)"/>
+        <!-- Gear 5 glow -->
+        <ellipse cx="300" cy="230" rx="150" ry="120" fill="url(#gearG)" opacity="0.3"/>
+        <!-- clouds (stylized) -->
+        <ellipse cx="120" cy="80" rx="70" ry="25" fill="#1a2a3a" opacity="0.6"/>
+        <ellipse cx="160" cy="72" rx="50" ry="20" fill="#1a2a3a" opacity="0.5"/>
+        <ellipse cx="480" cy="60" rx="60" ry="22" fill="#1a2a3a" opacity="0.5"/>
+        <!-- sea -->
+        <path d="M0 320 Q150 295 300 315 Q450 335 600 310 L600 420 L0 420Z" fill="#0a2040" opacity="0.9"/>
+        <path d="M0 340 Q100 320 200 340 Q350 365 500 340 Q560 325 600 335 L600 420 L0 420Z" fill="#091830"/>
+        <!-- waves -->
+        <path d="M0 355 Q50 345 100 355 Q150 365 200 355 Q250 345 300 355 Q350 365 400 355 Q450 345 500 355 Q550 365 600 355" stroke="#1a6fa8" stroke-width="1.5" fill="none" opacity="0.5"/>
+        <!-- Luffy silhouette (simplified iconic) -->
+        <!-- body -->
+        <ellipse cx="300" cy="290" rx="48" ry="60" fill="#b52a2a"/>
+        <!-- straw hat -->
+        <ellipse cx="300" cy="178" rx="72" ry="14" fill="#c9922a"/>
+        <path d="M240 178 Q300 145 360 178" fill="#e8b84b" stroke="#c9922a" stroke-width="1.5"/>
+        <!-- head -->
+        <ellipse cx="300" cy="210" rx="38" ry="40" fill="#e8a87a"/>
+        <!-- hat band -->
+        <path d="M240 178 L360 178" stroke="#b52a2a" stroke-width="5"/>
+        <!-- scar under eye -->
+        <path d="M320 218 L328 228" stroke="#b52a2a" stroke-width="2" stroke-linecap="round"/>
+        <!-- smile -->
+        <path d="M284 228 Q300 242 316 228" stroke="#1a1209" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <!-- eyes -->
+        <circle cx="289" cy="212" r="5" fill="#1a1209"/>
+        <circle cx="311" cy="212" r="5" fill="#1a1209"/>
+        <circle cx="291" cy="210" r="2" fill="white"/>
+        <circle cx="313" cy="210" r="2" fill="white"/>
+        <!-- arms stretched -->
+        <path d="M252 285 Q180 270 120 300" stroke="#e8a87a" stroke-width="16" stroke-linecap="round" fill="none"/>
+        <path d="M348 285 Q420 270 480 300" stroke="#e8a87a" stroke-width="16" stroke-linecap="round" fill="none"/>
+        <!-- gear 5 aura -->
+        <ellipse cx="300" cy="260" rx="85" ry="75" fill="none" stroke="#e84040" stroke-width="1.5" opacity="0.3"/>
+        <ellipse cx="300" cy="260" rx="105" ry="95" fill="none" stroke="#e84040" stroke-width="0.8" opacity="0.15" stroke-dasharray="6 4"/>
+        <!-- shirt open -->
+        <path d="M270 265 L260 350 L300 365 L340 350 L330 265 Q300 280 270 265Z" fill="#b52a2a"/>
+        <!-- shorts -->
+        <path d="M262 345 L248 420 L300 420 L352 420 L338 345Z" fill="#c9922a"/>
+        <!-- Title overlay -->
+        <rect x="0" y="370" width="600" height="50" fill="rgba(6,13,20,0.7)"/>
+        <text x="300" y="402" text-anchor="middle" font-family="'Cinzel Decorative', serif" font-size="16" fill="#f5d98a" letter-spacing="3">MONKEY D. LUFFY</text>
+      </svg>
+    </div>
+    <div class="post-hero-body">
+      <div class="post-category">✦ Capitaine · Mugiwara no Ichimi</div>
+      <h2 class="post-title">Monkey D. Luffy —<br>Le Roi des Pirates en devenir</h2>
+      <div class="post-meta">
+        <span>Gear 5 · Nika</span>
+        <span class="post-meta-dot">·</span>
+        <span>Prime : 3 Mds Berry</span>
+        <span class="post-meta-dot">·</span>
+        <span>Yonko</span>
+      </div>
+      <p class="post-excerpt">
+        Né sous le signe du Soleil, Monkey D. Luffy incarne la liberté absolue. Du fruit du diable Gomu Gomu — en réalité le légendaire Hito Hito no Mi modèle Nika — il a libéré un pouvoir que le Gouvernement Mondial cherchait à effacer de l'histoire depuis 800 ans.
+      </p>
+      <blockquote style="font-size:0.9rem;margin-bottom:1.25rem">
+        "Je serai le Roi des Pirates !" — Monkey D. Luffy
+      </blockquote>
+      <button class="btn-read" onclick="event.stopPropagation();openModal('luffy')">
+        Lire l'article complet
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- SECTION MUGIWARA -->
+  <div id="mugiwara" class="section-head">
+    <span class="section-title">L'équipage du Chapeau de Paille</span>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="card-grid">
+
+    <!-- Zoro -->
+    <a class="card" onclick="openModal('zoro');return false;" href="#">
+      <div class="card-art">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" style="background:#06100a">
+          <defs><radialGradient id="zG" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#1d5c2a" stop-opacity="0.6"/><stop offset="100%" stop-color="#06100a" stop-opacity="0"/></radialGradient></defs>
+          <rect width="300" height="200" fill="#06100a"/>
+          <ellipse cx="150" cy="120" rx="120" ry="100" fill="url(#zG)"/>
+          <!-- Three swords cross -->
+          <g transform="translate(150,110)">
+            <rect x="-3" y="-90" width="6" height="160" rx="3" fill="#8fbc8f" transform="rotate(0)"/>
+            <rect x="-3" y="-90" width="6" height="160" rx="3" fill="#8fbc8f" transform="rotate(30)"/>
+            <rect x="-3" y="-90" width="6" height="160" rx="3" fill="#8fbc8f" transform="rotate(-30)"/>
+            <circle r="12" fill="#1d5c2a" stroke="#8fbc8f" stroke-width="1.5"/>
+          </g>
+          <!-- Zoro silhouette -->
+          <ellipse cx="150" cy="80" rx="22" ry="24" fill="#5a8a6a"/>
+          <rect x="130" y="104" width="40" height="50" rx="5" fill="#2d4a35"/>
+          <!-- eye scar -->
+          <path d="M164 76 L168 84" stroke="#1a0a0a" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- green hair -->
+          <ellipse cx="150" cy="62" rx="22" ry="12" fill="#3d7a4a"/>
+          <text x="150" y="185" text-anchor="middle" font-family="'Cinzel', serif" font-size="10" fill="#8fbc8f" letter-spacing="2">RORONOA ZORO</text>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Premier Épéiste · Navigateur</div>
+        <h3 class="card-title">Roronoa Zoro — La Voie de l'Épée</h3>
+        <p class="card-excerpt">Premier épéiste du monde en devenir. Sa technique Santoryu et sa résolution à ne jamais perdre font de lui le pilier de l'équipage.</p>
+      </div>
+      <div class="card-footer">
+        <span>Prime : 1 111 000 000  Berry</span>
+        <span>Asura · Enma</span>
+      </div>
+    </a>
+
+    <!-- Nami -->
+    <a class="card" onclick="openModal('nami');return false;" href="#">
+      <div class="card-art">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" style="background:#0a0e18">
+          <defs><radialGradient id="nG" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#c9922a" stop-opacity="0.4"/><stop offset="100%" stop-color="#0a0e18" stop-opacity="0"/></radialGradient></defs>
+          <rect width="300" height="200" fill="#0a0e18"/>
+          <ellipse cx="150" cy="100" rx="130" ry="110" fill="url(#nG)"/>
+          <!-- clouds & weather -->
+          <ellipse cx="80" cy="50" rx="40" ry="18" fill="#1a2a4a" opacity="0.8"/>
+          <ellipse cx="220" cy="40" rx="35" ry="15" fill="#1a2a4a" opacity="0.6"/>
+          <!-- lightning bolts -->
+          <path d="M90 35 L82 55 L88 55 L78 78 L100 52 L92 52 L102 35Z" fill="#f5d98a" opacity="0.8"/>
+          <path d="M220 28 L214 44 L219 44 L211 62 L228 42 L221 42 L228 28Z" fill="#f5d98a" opacity="0.6"/>
+          <!-- Nami portrait -->
+          <ellipse cx="150" cy="90" rx="26" ry="28" fill="#e8b88a"/>
+          <ellipse cx="150" cy="68" rx="26" ry="14" fill="#c9922a"/>
+          <!-- orange hair waves -->
+          <path d="M124 70 Q110 80 112 95" stroke="#c9922a" stroke-width="8" stroke-linecap="round" fill="none"/>
+          <path d="M176 70 Q190 85 185 100" stroke="#c9922a" stroke-width="6" stroke-linecap="round" fill="none"/>
+          <!-- clima-tact -->
+          <line x1="175" y1="60" x2="220" y2="30" stroke="#aaa" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="220" cy="28" r="5" fill="#88aaff" opacity="0.7"/>
+          <!-- outfit -->
+          <path d="M126 118 L136 165 L150 170 L164 165 L174 118 Q150 128 126 118Z" fill="#c9922a" opacity="0.8"/>
+          <text x="150" y="190" text-anchor="middle" font-family="'Cinzel', serif" font-size="10" fill="#f5d98a" letter-spacing="2">NAMI</text>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Navigatrice · Cambrioleur de Pirates</div>
+        <h3 class="card-title">Nami — La Météorologue du Grand Line</h3>
+        <p class="card-excerpt">Génie de la navigation, Nami maîtrise la Clima-Tact et peut lire les mers les plus imprévisibles du monde. Son rêve : cartographier l'intégralité des océans.</p>
+      </div>
+      <div class="card-footer">
+        <span>Prime : 366 000 000 Berry</span>
+        <span>Clima-Tact Parfait</span>
+      </div>
+    </a>
+
+    <!-- Sanji -->
+    <a class="card" onclick="openModal('sanji');return false;" href="#">
+      <div class="card-art">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" style="background:#0e0a06">
+          <defs><radialGradient id="sG" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#3a1a05" stop-opacity="0.9"/><stop offset="100%" stop-color="#0e0a06" stop-opacity="0"/></radialGradient></defs>
+          <rect width="300" height="200" fill="#0e0a06"/>
+          <ellipse cx="150" cy="110" rx="130" ry="110" fill="url(#sG)"/>
+          <!-- Fire -->
+          <path d="M100 160 Q95 130 110 110 Q105 135 120 125 Q115 145 135 135 Q130 155 150 140 Q145 160 155 148 Q155 165 170 150 Q165 168 180 158 Q175 175 160 175 L140 175 Q120 178 100 160Z" fill="#c9461a" opacity="0.7"/>
+          <path d="M110 165 Q108 140 120 125 Q118 145 130 138 Q128 155 145 145 Q143 162 158 152 Q155 168 165 160 Q160 175 145 178 Q128 180 110 165Z" fill="#e86a1a" opacity="0.8"/>
+          <!-- Sanji -->
+          <ellipse cx="150" cy="80" rx="22" ry="24" fill="#c8a86a"/>
+          <!-- blonde hair, curlicue -->
+          <ellipse cx="150" cy="60" rx="22" ry="12" fill="#c9922a"/>
+          <path d="M128 62 Q120 55 124 46 Q132 38 138 50" stroke="#c9922a" stroke-width="6" stroke-linecap="round" fill="none"/>
+          <!-- cigarette -->
+          <line x1="158" y1="84" x2="178" y2="80" stroke="#ddd" stroke-width="2.5" stroke-linecap="round"/>
+          <ellipse cx="179" cy="79" rx="4" ry="3" fill="#c9922a" opacity="0.7"/>
+          <!-- suit -->
+          <rect x="130" y="104" width="40" height="50" rx="4" fill="#1a1a2a"/>
+          <line x1="150" y1="104" x2="150" y2="154" stroke="#c9922a" stroke-width="1"/>
+          <text x="150" y="188" text-anchor="middle" font-family="'Cinzel', serif" font-size="10" fill="#e8a860" letter-spacing="2">SANJI</text>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Cuisinier · Prince d'Ennies Lobby</div>
+        <h3 class="card-title">Vinsmoke Sanji — Le Maître du Feu</h3>
+        <p class="card-excerpt">Cuisinier de génie et combattant de haut vol. Sa philosophie — ne jamais frapper une femme — et ses flammes Ifrit Jambe font de lui une force inégalée.</p>
+      </div>
+      <div class="card-footer">
+        <span>Prime : 1 032 000 000 Berry</span>
+        <span>Diable Jambe · Germa</span>
+      </div>
+    </a>
+
+    <!-- Robin -->
+    <a class="card" onclick="openModal('robin');return false;" href="#">
+      <div class="card-art">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" style="background:#08080f">
+          <defs><radialGradient id="rG" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#1a0a2a" stop-opacity="0.9"/><stop offset="100%" stop-color="#08080f" stop-opacity="0"/></radialGradient></defs>
+          <rect width="300" height="200" fill="#08080f"/>
+          <ellipse cx="150" cy="100" rx="130" ry="110" fill="url(#rG)"/>
+          <!-- scattered hands / Hana Hana -->
+          <g opacity="0.5" fill="#6a4a8a">
+            <ellipse cx="60" cy="50" rx="14" ry="8" transform="rotate(-30,60,50)"/>
+            <ellipse cx="240" cy="40" rx="12" ry="7" transform="rotate(20,240,40)"/>
+            <ellipse cx="40" cy="140" rx="13" ry="7" transform="rotate(15,40,140)"/>
+            <ellipse cx="255" cy="150" rx="11" ry="7" transform="rotate(-20,255,150)"/>
+            <ellipse cx="80" cy="170" rx="10" ry="6" transform="rotate(10,80,170)"/>
+            <ellipse cx="220" cy="175" rx="9" ry="6" transform="rotate(-10,220,175)"/>
+          </g>
+          <!-- Robin -->
+          <ellipse cx="150" cy="82" rx="22" ry="24" fill="#8a6a90"/>
+          <ellipse cx="150" cy="62" rx="22" ry="13" fill="#1a1a30"/>
+          <!-- dark hair -->
+          <path d="M128 65 Q120 80 125 96" stroke="#1a1a30" stroke-width="8" stroke-linecap="round" fill="none"/>
+          <path d="M172 65 Q180 82 176 96" stroke="#1a1a30" stroke-width="6" stroke-linecap="round" fill="none"/>
+          <!-- outfit -->
+          <path d="M128 106 L136 160 L150 165 L164 160 L172 106 Q150 116 128 106Z" fill="#4a2a6a" opacity="0.9"/>
+          <text x="150" y="187" text-anchor="middle" font-family="'Cinzel', serif" font-size="10" fill="#b090d0" letter-spacing="2">NICO ROBIN</text>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Archéologue · Seule héritière d'Ohara</div>
+        <h3 class="card-title">Nico Robin — La Fleur du Diable</h3>
+        <p class="card-excerpt">Seule personne au monde capable de déchiffrer les Poneglyphes, Robin porte le poids de l'histoire du monde. Son fruit — Hana Hana no Mi — fait fleurir des membres en tout lieu.</p>
+      </div>
+      <div class="card-footer">
+        <span>Prime : 930 000 000 Berry</span>
+        <span>Hana Hana no Mi</span>
+      </div>
+    </a>
+
+    <!-- Ace -->
+    <a class="card" onclick="openModal('ace');return false;" href="#">
+      <div class="card-art">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" style="background:#100604">
+          <defs><radialGradient id="aG" cx="50%" cy="50%" r="65%"><stop offset="0%" stop-color="#c9461a" stop-opacity="0.7"/><stop offset="100%" stop-color="#100604" stop-opacity="0"/></radialGradient></defs>
+          <rect width="300" height="200" fill="#100604"/>
+          <ellipse cx="150" cy="100" rx="140" ry="120" fill="url(#aG)"/>
+          <!-- Flames background -->
+          <g opacity="0.6">
+            <path d="M50 180 Q45 150 60 130 Q55 155 70 145 Q65 165 85 155 Q80 175 50 180Z" fill="#e84a10"/>
+            <path d="M230 175 Q225 145 240 125 Q235 150 250 140 Q245 162 260 152 Q255 178 230 175Z" fill="#e84a10"/>
+            <path d="M120 170 Q115 140 130 120 Q125 145 140 135 Q138 155 155 142 Q153 168 120 170Z" fill="#e86a20"/>
+            <path d="M155 165 Q152 135 168 115 Q164 142 180 130 Q176 152 192 140 Q188 168 155 165Z" fill="#e86a20"/>
+          </g>
+          <!-- Ace portrait -->
+          <ellipse cx="150" cy="82" rx="24" ry="26" fill="#b86040"/>
+          <!-- freckles -->
+          <circle cx="140" cy="88" r="2" fill="#7a3a20" opacity="0.6"/>
+          <circle cx="144" cy="91" r="1.5" fill="#7a3a20" opacity="0.5"/>
+          <circle cx="160" cy="88" r="2" fill="#7a3a20" opacity="0.6"/>
+          <circle cx="156" cy="91" r="1.5" fill="#7a3a20" opacity="0.5"/>
+          <!-- hat -->
+          <path d="M126 70 L174 70 L169 60 L131 60Z" fill="#e86820"/>
+          <ellipse cx="150" cy="72" rx="30" ry="6" fill="#c9561a"/>
+          <text x="150" y="54" text-anchor="middle" font-family="'Cinzel', serif" font-size="8" fill="#f5d98a" letter-spacing="1">ACE</text>
+          <!-- beads necklace -->
+          <path d="M130 108 Q150 116 170 108" stroke="#c8a050" stroke-width="3" fill="none"/>
+          <!-- torso shirtless -->
+          <path d="M126 108 L133 162 L150 167 L167 162 L174 108 Q150 118 126 108Z" fill="#b06040" opacity="0.7"/>
+          <!-- ASCE tattoo suggestion -->
+          <text x="138" y="140" font-family="'Cinzel', serif" font-size="8" fill="#c9922a" opacity="0.6">ASCE</text>
+          <text x="150" y="188" text-anchor="middle" font-family="'Cinzel', serif" font-size="10" fill="#e86020" letter-spacing="2">PORTGAS D. ACE</text>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Frère de Luffy · Barbe Blanche Pirates</div>
+        <h3 class="card-title">Portgas D. Ace — La Poing de Feu</h3>
+        <p class="card-excerpt">Fils de Gol D. Roger, commandant de la 2e division de Barbe Blanche. Son fruit Mera Mera no Mi lui conférait la maîtrise absolue des flammes. Une légende partie trop tôt.</p>
+      </div>
+      <div class="card-footer">
+        <span>Prime : 550 000 000 Berry</span>
+        <span>Mera Mera no Mi</span>
+      </div>
+    </a>
+
+    <!-- Shanks -->
+    <a class="card" onclick="openModal('shanks');return false;" href="#">
+      <div class="card-art">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" style="background:#0a0612">
+          <defs><radialGradient id="shG" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#4a0a0a" stop-opacity="0.8"/><stop offset="100%" stop-color="#0a0612" stop-opacity="0"/></radialGradient></defs>
+          <rect width="300" height="200" fill="#0a0612"/>
+          <ellipse cx="150" cy="100" rx="130" ry="110" fill="url(#shG)"/>
+          <!-- Conqueror's Haki cracks -->
+          <g stroke="#4a0a8a" stroke-width="0.8" opacity="0.4" fill="none">
+            <path d="M50 100 Q80 80 120 110"/>
+            <path d="M250 90 Q220 70 180 100"/>
+            <path d="M100 160 Q130 140 160 170"/>
+            <path d="M200 155 Q175 135 145 165"/>
+          </g>
+          <!-- Shanks portrait -->
+          <ellipse cx="150" cy="82" rx="23" ry="25" fill="#c8706a"/>
+          <!-- Red hair -->
+          <ellipse cx="150" cy="62" rx="24" ry="14" fill="#c93030"/>
+          <path d="M126 66 Q115 78 118 92" stroke="#c93030" stroke-width="9" stroke-linecap="round" fill="none"/>
+          <path d="M174 66 Q186 80 182 94" stroke="#c93030" stroke-width="7" stroke-linecap="round" fill="none"/>
+          <!-- scar over left eye -->
+          <path d="M143 73 L139 86" stroke="#1a0a0a" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- cloak -->
+          <path d="M127 107 L118 165 L150 168 L182 165 L173 107 Q150 117 127 107Z" fill="#1a0a0a"/>
+          <!-- one arm missing (right) -->
+          <path d="M174 115 L185 150" stroke="#1a0a0a" stroke-width="14" stroke-linecap="round"/>
+          <!-- empty sleeve -->
+          <ellipse cx="185" cy="152" rx="7" ry="5" fill="#1a0a0a" opacity="0.5"/>
+          <text x="150" y="188" text-anchor="middle" font-family="'Cinzel', serif" font-size="10" fill="#e04040" letter-spacing="2">SHANKS LE ROUX</text>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Yonko · Capitaine des Roux</div>
+        <h3 class="card-title">Shanks le Roux — L'Équilibre du Monde</h3>
+        <p class="card-excerpt">L'un des quatre Empereurs. Ancien apprenti de Roger, il a inspiré Luffy à devenir pirate. Son Haki des Rois est d'une puissance sans égale — il peut arrêter la guerre en marchant.</p>
+      </div>
+      <div class="card-footer">
+        <span>Prime : 4 048 900 000 Berry</span>
+        <span>Yonko · Roux</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- FACTIONS -->
+  <div id="factions" class="section-head">
+    <span class="section-title">Factions du monde</span>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="faction-strip">
+    <a class="faction-cell" href="#" onclick="return false;">
+      <div class="faction-icon">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="22" stroke="#c9922a" stroke-width="1" opacity="0.5"/>
+          <path d="M24 8 L28 20 L42 20 L30 28 L34 40 L24 32 L14 40 L18 28 L6 20 L20 20Z" fill="#c9922a" opacity="0.8"/>
+        </svg>
+      </div>
+      <div class="faction-name">Pirates</div>
+      <div class="faction-count">Mugiwara, Yonko, Corsaires...</div>
+    </a>
+    <a class="faction-cell" href="#" onclick="return false;">
+      <div class="faction-icon">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="28" height="28" rx="4" stroke="#1a6fa8" stroke-width="1" opacity="0.6"/>
+          <path d="M24 14 L24 34 M14 24 L34 24" stroke="#1a6fa8" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="24" cy="24" r="5" fill="#1a6fa8" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="faction-name">Marine</div>
+      <div class="faction-count">Amiraux, Vice-amiraux...</div>
+    </a>
+    <a class="faction-cell" href="#" onclick="return false;">
+      <div class="faction-icon">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 4 L44 36 L4 36Z" stroke="#b52a2a" stroke-width="1" opacity="0.6" fill="rgba(181,42,42,0.2)"/>
+          <circle cx="24" cy="24" r="8" fill="#b52a2a" opacity="0.5"/>
+          <path d="M24 16 L24 32 M16 24 L32 24" stroke="#f5d98a" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="faction-name">Gouvernement Mondial</div>
+      <div class="faction-count">Gorosei, Celestins...</div>
+    </a>
+    <a class="faction-cell" href="#" onclick="return false;">
+      <div class="faction-icon">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 38 Q24 6 40 38" stroke="#6a4a8a" stroke-width="1" opacity="0.6" fill="rgba(106,74,138,0.15)"/>
+          <circle cx="24" cy="28" r="10" stroke="#6a4a8a" stroke-width="1" opacity="0.5"/>
+          <path d="M20 28 Q24 22 28 28 Q24 34 20 28Z" fill="#6a4a8a" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="faction-name">Révolutionnaires</div>
+      <div class="faction-count">Dragon, Sabo, Ivankov...</div>
+    </a>
+  </div>
+
+  <!-- TWO COL: article + sidebar -->
+  <div class="two-col">
+    <div>
+      <div class="section-head">
+        <span class="section-title">Article en profondeur</span>
+        <div class="section-rule"></div>
+      </div>
+
+      <article class="article-full" onclick="openModal('zoro')">
+        <div class="article-full-art">
+          <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="background:#06100a">
+            <defs><radialGradient id="z2G" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#1d5c2a" stop-opacity="0.5"/><stop offset="100%" stop-color="#06100a" stop-opacity="0"/></radialGradient></defs>
+            <rect width="700" height="260" fill="#06100a"/>
+            <ellipse cx="350" cy="130" rx="300" ry="160" fill="url(#z2G)"/>
+            <!-- swords background large -->
+            <g transform="translate(350,130)" stroke="#3a7a4a" stroke-width="2" opacity="0.3" fill="none">
+              <line x1="0" y1="-120" x2="0" y2="120"/>
+              <line x1="-104" y1="-60" x2="104" y2="60"/>
+              <line x1="104" y1="-60" x2="-104" y2="60"/>
+            </g>
+            <!-- Zoro figure large -->
+            <ellipse cx="350" cy="100" rx="30" ry="33" fill="#5a7a6a"/>
+            <ellipse cx="350" cy="74" rx="30" ry="16" fill="#3d6a4a"/>
+            <!-- bandana -->
+            <rect x="320" y="72" width="60" height="10" rx="5" fill="#2a2040"/>
+            <!-- eye scar -->
+            <path d="M370 96 L376 108" stroke="#1a0a0a" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- outfit -->
+            <path d="M322 133 L330 200 L350 207 L370 200 L378 133 Q350 145 322 133Z" fill="#2d4a35"/>
+            <!-- swords in mouth hint -->
+            <line x1="350" y1="118" x2="395" y2="80" stroke="#8fbc8f" stroke-width="3" stroke-linecap="round"/>
+            <!-- arms with swords -->
+            <path d="M322 140 L260 100" stroke="#5a7a6a" stroke-width="15" stroke-linecap="round" fill="none"/>
+            <line x1="255" y1="100" x2="190" y2="58" stroke="#8fbc8f" stroke-width="3" stroke-linecap="round"/>
+            <path d="M378 140 L440 100" stroke="#5a7a6a" stroke-width="15" stroke-linecap="round" fill="none"/>
+            <line x1="445" y1="100" x2="510" y2="58" stroke="#8fbc8f" stroke-width="3" stroke-linecap="round"/>
+            <text x="350" y="246" text-anchor="middle" font-family="'Cinzel Decorative', serif" font-size="13" fill="#8fbc8f" letter-spacing="3" opacity="0.7">SANTORYU — LA VOIE DE L'ÉPÉE</text>
+          </svg>
+        </div>
+        <div class="article-full-body">
+          <div class="post-category">✦ Profil complet · Premier Épéiste</div>
+          <h2 class="article-full-title">Roronoa Zoro — De la Promesse à la Légende</h2>
+          <div class="article-full-text">
+            <p>Avant même de rejoindre l'équipage du Chapeau de Paille, Roronoa Zoro était déjà une légende dans les dojo de l'Est Blue. Sa promesse à Kuina — devenir le premier épéiste du monde — est le serment qui structure toute son existence.</p>
+            <blockquote>"Si je perds contre toi, je mourrai. Mais si tu perds, abandonne ton rêve et donne-moi ce sabre." — Zoro à Mihawk, Baratie</blockquote>
+            <p>Sa technique Santoryu — trois sabres, dont un tenu entre les dents — défie les limites anatomiques et conceptuelles du combat. Avec Enma, sabre légué par Kozuki Oden, il absorbe et libère des quantités colossales de Haki des Armures.</p>
+          </div>
+          <button class="btn-read" onclick="event.stopPropagation();openModal('zoro')">
+            Continuer la lecture
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+      </article>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside>
+      <!-- Quote widget -->
+      <div class="sidebar-widget">
+        <div class="sidebar-widget-title">Citation du Jour</div>
+        <div class="quote-widget">
+          <p class="quote-text">"Les gens cherchent leur place dans la vie. Moi, je cherche le bout du monde."</p>
+          <div class="quote-attr">— Monkey D. Luffy</div>
+        </div>
+      </div>
+
+      <!-- Ranking -->
+      <div class="sidebar-widget">
+        <div class="sidebar-widget-title">Classement par Prime</div>
+        <ul class="ranking-list">
+          <li class="ranking-item">
+            <span class="ranking-num">1</span>
+            <div class="ranking-info">
+              <div class="ranking-name">Monkey D. Luffy</div>
+              <div class="ranking-sub">Yonko · Mugiwara</div>
+            </div>
+            <div class="ranking-bounty">3 000 000 000</div>
+          </li>
+          <li class="ranking-item">
+            <span class="ranking-num">2</span>
+            <div class="ranking-info">
+              <div class="ranking-name">Shanks le Roux</div>
+              <div class="ranking-sub">Yonko</div>
+            </div>
+            <div class="ranking-bounty">4 048 900 000</div>
+          </li>
+          <li class="ranking-item">
+            <span class="ranking-num">3</span>
+            <div class="ranking-info">
+              <div class="ranking-name">Roronoa Zoro</div>
+              <div class="ranking-sub">Mugiwara</div>
+            </div>
+            <div class="ranking-bounty">1 111 000 000</div>
+          </li>
+          <li class="ranking-item">
+            <span class="ranking-num">4</span>
+            <div class="ranking-info">
+              <div class="ranking-name">Vinsmoke Sanji</div>
+              <div class="ranking-sub">Mugiwara</div>
+            </div>
+            <div class="ranking-bounty">1 032 000 000</div>
+          </li>
+          <li class="ranking-item">
+            <span class="ranking-num">5</span>
+            <div class="ranking-info">
+              <div class="ranking-name">Nico Robin</div>
+              <div class="ranking-sub">Mugiwara</div>
+            </div>
+            <div class="ranking-bounty">930 000 000</div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Tags -->
+      <div class="sidebar-widget">
+        <div class="sidebar-widget-title">Explorer par thème</div>
+        <div class="tag-cloud">
+          <a class="tag" href="#" onclick="return false;">Fruits du Démon</a>
+          <a class="tag" href="#" onclick="return false;">Haki</a>
+          <a class="tag" href="#" onclick="return false;">Yonko</a>
+          <a class="tag" href="#" onclick="return false;">Marine</a>
+          <a class="tag" href="#" onclick="return false;">Révolutionnaires</a>
+          <a class="tag" href="#" onclick="return false;">Poneglyphes</a>
+          <a class="tag" href="#" onclick="return false;">Grand Line</a>
+          <a class="tag" href="#" onclick="return false;">Void Century</a>
+          <a class="tag" href="#" onclick="return false;">Wano</a>
+          <a class="tag" href="#" onclick="return false;">Enies Lobby</a>
+          <a class="tag" href="#" onclick="return false;">Marineford</a>
+          <a class="tag" href="#" onclick="return false;">Gear 5</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- BOUNTY POSTERS -->
+  <div id="bounties" class="section-head">
+    <span class="section-title">Affiches de primes</span>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="bounty-grid">
+
+    <!-- Luffy bounty poster -->
+    <div class="bounty-card">
+      <div class="bounty-header">Avis de Recherche — Marine</div>
+      <div class="bounty-portrait">
+        <svg viewBox="0 0 150 120" xmlns="http://www.w3.org/2000/svg" style="background:#d4b896">
+          <rect width="150" height="120" fill="#c8a87a"/>
+          <rect x="0" y="0" width="150" height="2" fill="#8a6840"/>
+          <rect x="0" y="118" width="150" height="2" fill="#8a6840"/>
+          <!-- straw hat -->
+          <ellipse cx="75" cy="45" rx="42" ry="9" fill="#b8820a"/>
+          <path d="M44 45 Q75 25 106 45" fill="#d4980c" stroke="#b8820a" stroke-width="1"/>
+          <path d="M44 45 L106 45" stroke="#b52a2a" stroke-width="4"/>
+          <!-- face -->
+          <ellipse cx="75" cy="70" rx="24" ry="26" fill="#e8a870"/>
+          <!-- scar -->
+          <path d="M86 74 L92 84" stroke="#b52a2a" stroke-width="2" stroke-linecap="round"/>
+          <!-- grin -->
+          <path d="M62 82 Q75 95 88 82" stroke="#1a1209" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- eyes -->
+          <circle cx="67" cy="66" r="4.5" fill="#1a1209"/>
+          <circle cx="83" cy="66" r="4.5" fill="#1a1209"/>
+          <circle cx="69" cy="64" r="1.8" fill="white"/>
+          <circle cx="85" cy="64" r="1.8" fill="white"/>
+          <!-- vest -->
+          <path d="M51 96 L57 120 L75 122 L93 120 L99 96 Q75 104 51 96Z" fill="#b52a2a" opacity="0.8"/>
+        </svg>
+      </div>
+      <div class="bounty-info">
+        <div class="bounty-name">Monkey D. Luffy</div>
+        <div class="bounty-title-text">"Chapeau de Paille"</div>
+        <div class="bounty-amount">3 000 000 000  Berry</div>
+      </div>
+    </div>
+
+    <!-- Zoro -->
+    <div class="bounty-card">
+      <div class="bounty-header">Avis de Recherche — Marine</div>
+      <div class="bounty-portrait">
+        <svg viewBox="0 0 150 120" xmlns="http://www.w3.org/2000/svg" style="background:#c0b896">
+          <rect width="150" height="120" fill="#b8a870"/>
+          <rect x="0" y="0" width="150" height="2" fill="#7a6030"/>
+          <rect x="0" y="118" width="150" height="2" fill="#7a6030"/>
+          <!-- green hair -->
+          <ellipse cx="75" cy="46" rx="26" ry="14" fill="#3d7a4a"/>
+          <!-- face -->
+          <ellipse cx="75" cy="68" rx="24" ry="26" fill="#9aaa8a"/>
+          <!-- scar left -->
+          <path d="M88 57 L85 73" stroke="#1a0a0a" stroke-width="3" stroke-linecap="round"/>
+          <!-- eyes -->
+          <circle cx="63" cy="65" r="4" fill="#1a2a10"/>
+          <ellipse cx="87" cy="65" rx="4" ry="2" fill="#1a2a10"/>
+          <!-- mouth -->
+          <path d="M65 80 L85 80" stroke="#1a0a0a" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- three swords -->
+          <line x1="40" y1="40" x2="110" y2="90" stroke="#8fbc8f" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+          <line x1="75" y1="20" x2="75" y2="115" stroke="#8fbc8f" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+          <line x1="110" y1="40" x2="40" y2="90" stroke="#8fbc8f" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="bounty-info">
+        <div class="bounty-name">Roronoa Zoro</div>
+        <div class="bounty-title-text">"Chasseur de Pirates"</div>
+        <div class="bounty-amount">1 111 000 000  Berry</div>
+      </div>
+    </div>
+
+    <!-- Nami -->
+    <div class="bounty-card">
+      <div class="bounty-header">Avis de Recherche — Marine</div>
+      <div class="bounty-portrait">
+        <svg viewBox="0 0 150 120" xmlns="http://www.w3.org/2000/svg" style="background:#ccc0a0">
+          <rect width="150" height="120" fill="#c0b08a"/>
+          <rect x="0" y="0" width="150" height="2" fill="#8a6830"/>
+          <rect x="0" y="118" width="150" height="2" fill="#8a6830"/>
+          <!-- orange hair -->
+          <ellipse cx="75" cy="44" rx="28" ry="15" fill="#c9821a"/>
+          <path d="M50 46 Q40 60 44 78" stroke="#c9821a" stroke-width="10" stroke-linecap="round" fill="none"/>
+          <path d="M100 46 Q112 62 108 78" stroke="#c9821a" stroke-width="8" stroke-linecap="round" fill="none"/>
+          <!-- face -->
+          <ellipse cx="75" cy="70" rx="24" ry="26" fill="#e8b880"/>
+          <!-- eyes -->
+          <ellipse cx="64" cy="66" rx="5" ry="4" fill="#3a2810"/>
+          <ellipse cx="86" cy="66" rx="5" ry="4" fill="#3a2810"/>
+          <circle cx="66" cy="64" r="2" fill="white"/>
+          <circle cx="88" cy="64" r="2" fill="white"/>
+          <!-- smile -->
+          <path d="M64 80 Q75 90 86 80" stroke="#3a2810" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <!-- tangerine symbol -->
+          <circle cx="116" cy="30" r="10" fill="#c9822a" opacity="0.6"/>
+          <text x="116" y="34" text-anchor="middle" font-size="10" fill="#8a4810">🍊</text>
+        </svg>
+      </div>
+      <div class="bounty-info">
+        <div class="bounty-name">Nami</div>
+        <div class="bounty-title-text">"Chat Voleuse"</div>
+        <div class="bounty-amount">366 000 000  Berry</div>
+      </div>
+    </div>
+
+    <!-- Sanji -->
+    <div class="bounty-card">
+      <div class="bounty-header">Avis de Recherche — Marine</div>
+      <div class="bounty-portrait">
+        <svg viewBox="0 0 150 120" xmlns="http://www.w3.org/2000/svg" style="background:#c8b88a">
+          <rect width="150" height="120" fill="#c0a878"/>
+          <rect x="0" y="0" width="150" height="2" fill="#806030"/>
+          <rect x="0" y="118" width="150" height="2" fill="#806030"/>
+          <!-- blonde hair -->
+          <ellipse cx="75" cy="44" rx="26" ry="13" fill="#c9922a"/>
+          <path d="M52 48 Q42 58 46 74" stroke="#c9922a" stroke-width="10" stroke-linecap="round" fill="none"/>
+          <!-- curly eyebrow detail -->
+          <path d="M50 52 Q44 44 50 38 Q58 32 62 44" stroke="#c9922a" stroke-width="7" stroke-linecap="round" fill="none"/>
+          <!-- face -->
+          <ellipse cx="75" cy="70" rx="24" ry="26" fill="#d4a870"/>
+          <!-- one visible eye (swirly brow hides other) -->
+          <ellipse cx="86" cy="66" rx="5" ry="4" fill="#2a2020"/>
+          <circle cx="88" cy="64" r="2" fill="white"/>
+          <!-- cigarette -->
+          <line x1="86" y1="80" x2="108" y2="75" stroke="#ddd" stroke-width="2" stroke-linecap="round"/>
+          <!-- suit -->
+          <rect x="55" y="96" width="40" height="24" rx="3" fill="#1a1a28"/>
+          <line x1="75" y1="96" x2="75" y2="120" stroke="#c9922a" stroke-width="1"/>
+          <!-- flame hint -->
+          <path d="M30 115 Q28 100 36 90 Q33 105 42 98 Q40 110 30 115Z" fill="#e84a10" opacity="0.5"/>
+          <path d="M118 110 Q116 95 124 85 Q121 100 130 93 Q128 106 118 110Z" fill="#e84a10" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="bounty-info">
+        <div class="bounty-name">Vinsmoke Sanji</div>
+        <div class="bounty-title-text">"Pied Noir"</div>
+        <div class="bounty-amount">1 032 000 000  Berry</div>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Nakama Chronicle</div>
+  <p class="footer-tagline">"La liberté est une chose que personne ne peut enlever à un autre."</p>
+  <ul class="footer-links">
+    <li><a href="#">Accueil</a></li>
+    <li><a href="#">Mugiwara</a></li>
+    <li><a href="#">Factions</a></li>
+    <li><a href="#">Primes</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <p class="footer-copy">© 2025 Nakama Chronicle · One Piece est une création d'Eiichiro Oda · Thème Ghost CMS · Projet académique</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal-bg" onclick="closeModal(event)">
+  <div class="modal" id="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title">Personnage</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-art" id="modal-art"></div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+const characters = {
+  luffy: {
+    title: "Monkey D. Luffy — Le Roi des Pirates",
+    stats: [["Prime", "3 000 000 000 B"], ["Fruit", "Hito Hito Nika"], ["Technique", "Gear 5"]],
+    art: `<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="background:#060d14;width:100%;height:200px">
+      <defs><radialGradient id="mL" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#c9461a" stop-opacity="0.6"/><stop offset="100%" stop-color="#060d14" stop-opacity="0"/></radialGradient></defs>
+      <rect width="700" height="200" fill="#060d14"/>
+      <ellipse cx="350" cy="100" rx="300" ry="120" fill="url(#mL)"/>
+      <ellipse cx="350" cy="100" rx="100" ry="80" fill="none" stroke="#e84040" stroke-width="1" opacity="0.2" stroke-dasharray="8 5"/>
+      <text x="350" y="88" text-anchor="middle" font-family="'Cinzel Decorative',serif" font-size="30" fill="#f5d98a" letter-spacing="5" opacity="0.9">MONKEY D. LUFFY</text>
+      <text x="350" y="120" text-anchor="middle" font-family="'Cinzel',serif" font-size="13" fill="#c9922a" letter-spacing="4" opacity="0.7">LE SEIGNEUR DU SOLEIL · GEAR FIVE</text>
+      <path d="M150 140 Q350 100 550 140" stroke="#c9922a" stroke-width="0.8" fill="none" opacity="0.3"/>
+    </svg>`,
+    content: `<p>Monkey D. Luffy, fils de Monkey D. Dragon (le criminel le plus recherché du monde) et petit-fils du vice-amiral Monkey D. Garp, est le fondateur et capitaine de l'équipage du Chapeau de Paille.</p>
+    <p>Enfant, il avala accidentellement le fruit du démon Gomu Gomu no Mi, pensait-on — qui s'avère être en réalité le légendaire Hito Hito no Mi modèle Nika, le "Fruit de l'Homme du Soleil". Ce fruit, que le Gouvernement Mondial cherchait à effacer de toute mémoire depuis 800 ans, conférait à son utilisateur le corps d'un homme fait de caoutchouc et la capacité de libérer une puissance liée à la joie et à la liberté.</p>
+    <p>Son activation du Gear 5 lors du combat contre Kaido à Wano marqua un tournant historique : Luffy devint l'incarnation de Nika, le "Guerrier Solaire", une figure mythique censée apporter la liberté et le rire à quiconque le verrait combattre.</p>
+    <blockquote>"Je ne veux pas conquérir quoi que ce soit. Je veux juste devenir le pirate le plus libre des mers !"</blockquote>
+    <p>Reconnu comme le 5e Empereur des Mers après l'arc Whole Cake Island, Luffy a depuis défait Kaido (l'une des "quatre grandes calamités") et réuni sous sa bannière une alliance gigantesque allant de Wano aux Mille Sunny.</p>`
+  },
+  zoro: {
+    title: "Roronoa Zoro — La Voie de l'Épée",
+    stats: [["Prime", "1 111 000 000 B"], ["Style", "Santoryu"], ["Sabres", "Wado / Sandai / Enma"]],
+    art: `<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="background:#06100a;width:100%;height:200px">
+      <rect width="700" height="200" fill="#06100a"/>
+      <g stroke="#3a7a4a" stroke-width="1.5" opacity="0.3" fill="none" transform="translate(350,100)">
+        <line x1="0" y1="-100" x2="0" y2="100"/>
+        <line x1="-87" y1="-50" x2="87" y2="50"/>
+        <line x1="87" y1="-50" x2="-87" y2="50"/>
+      </g>
+      <text x="350" y="88" text-anchor="middle" font-family="'Cinzel Decorative',serif" font-size="26" fill="#8fbc8f" letter-spacing="4" opacity="0.9">RORONOA ZORO</text>
+      <text x="350" y="118" text-anchor="middle" font-family="'Cinzel',serif" font-size="12" fill="#4a8a5a" letter-spacing="4" opacity="0.7">PREMIER ÉPÉISTE DU MONDE EN DEVENIR</text>
+    </svg>`,
+    content: `<p>Roronoa Zoro, surnommé "Chasseur de Pirates", est le premier membre à rejoindre l'équipage de Luffy. Ancien chasseur de primes aux redoutables capacités, il avait acquis une réputation terrifiante dès l'Est Blue.</p>
+    <p>Sa technique unique, le Santoryu (style des trois sabres), implique de tenir une lame entre les dents en plus des deux dans les mains. Sa philosophie de combat repose sur la pureté de l'entraînement, la discipline absolue et une résolution sans faille face à la mort.</p>
+    <blockquote>"Si je ne peux pas accomplir cet objectif, je n'aurai pas le droit de mourir."</blockquote>
+    <p>À Thriller Bark, après la défaite de l'équipage face à Thriller Bark, il absorba toute la douleur de Luffy — infligée par Bartholomew Kuma — sans laisser transpirer la moindre faiblesse devant Sanji : "Rien ne s'est passé ici."</p>
+    <p>Après Wano, armé d'Enma — le sabre de Kozuki Oden — il maîtrise désormais le Haki des Armures avancé (Enma en son) et s'impose comme l'un des combattants les plus redoutables de la génération.</p>`
+  },
+  nami: {
+    title: "Nami — La Météorologue des Mers",
+    stats: [["Prime", "366 000 000 B"], ["Arme", "Clima-Tact Parfait"], ["Rêve", "Cartographier le monde"]],
+    art: `<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="background:#0a0e18;width:100%;height:200px">
+      <rect width="700" height="200" fill="#0a0e18"/>
+      <path d="M90 100 Q200 60 310 90 Q420 120 530 80 Q610 55 700 80" stroke="#c9922a" stroke-width="1" fill="none" opacity="0.25"/>
+      <path d="M0 120 Q100 80 210 110 Q320 140 430 100 Q540 65 640 95 Q670 105 700 100" stroke="#c9922a" stroke-width="0.7" fill="none" opacity="0.15"/>
+      <text x="350" y="88" text-anchor="middle" font-family="'Cinzel Decorative',serif" font-size="36" fill="#f5d98a" letter-spacing="6" opacity="0.9">NAMI</text>
+      <text x="350" y="120" text-anchor="middle" font-family="'Cinzel',serif" font-size="11" fill="#c9922a" letter-spacing="5" opacity="0.6">NAVIGATRICE · CAT BURGLAR · MÉTÉOROLOGUE</text>
+    </svg>`,
+    content: `<p>Nami est la navigatrice de l'équipage du Chapeau de Paille. Originaire de Cocoyasi Village, elle grandit sous la menace du pirate Arlong qui avait capturé son village. Pour racheter la liberté de son peuple, elle vola des pirates pendant des années — développant ainsi des compétences de cartographie et de navigation sans égales.</p>
+    <p>Libérée par Luffy et l'équipage lors de l'arc Arlong Park, elle se joignit définitivement à eux. Sa Clima-Tact — bâton de combat utilisant la météorologie comme arme — lui permet de créer des orages, des éclairs et des tornades au combat.</p>
+    <blockquote>"Toutes les mers de ce monde sont reliées. Je veux les cartographier toutes, jusqu'à la dernière."</blockquote>
+    <p>Sa maîtrise des conditions climatiques lui permet de prédire des tempêtes et de naviguer dans des zones réputées infranchissables comme la Grand Line. Son rêve ultime : créer une carte complète du monde entier.</p>`
+  },
+  sanji: {
+    title: "Vinsmoke Sanji — Le Maître du Feu",
+    stats: [["Prime", "1 032 000 000 B"], ["Style", "Diable Jambe"], ["Haki", "Armures + Observation"]],
+    art: `<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="background:#0e0a06;width:100%;height:200px">
+      <rect width="700" height="200" fill="#0e0a06"/>
+      <g opacity="0.25">
+        <path d="M80 200 Q70 160 90 130 Q82 165 102 150 Q96 175 80 200Z" fill="#e84a10"/>
+        <path d="M600 200 Q595 160 615 130 Q607 165 627 150 Q620 175 600 200Z" fill="#e84a10"/>
+      </g>
+      <text x="350" y="88" text-anchor="middle" font-family="'Cinzel Decorative',serif" font-size="28" fill="#f5d98a" letter-spacing="4" opacity="0.9">VINSMOKE SANJI</text>
+      <text x="350" y="118" text-anchor="middle" font-family="'Cinzel',serif" font-size="11" fill="#e8a060" letter-spacing="4" opacity="0.7">CUISINIER · PIED NOIR · PRINCE DE GERMA</text>
+    </svg>`,
+    content: `<p>Sanji est le cuisinier de l'équipage. Enfant, il faillit mourir en mer, sauvé par le cuisinier Red Leg Zeff, dont la philosophie — "un cuisinier ne doit jamais blesser ses mains" — modela sa manière de combattre : il ne frappe qu'avec ses pieds.</p>
+    <p>Sa technique Diable Jambe — qui enflamme ses jambes par friction pure — évolua en Ifrit Jambe à Wano, combinant sa génétique de guerrier Vinsmoke (exosquelette, endurance surhumaine) et sa maîtrise du Haki pour créer des flammes d'une puissance catastrophique.</p>
+    <blockquote>"Un cuisinier doit protéger ses mains, même au prix de sa vie. Elles sont faites pour créer, pas pour détruire."</blockquote>
+    <p>Né troisième fils du général Vinsmoke Judge — dirigeant de la nation mercenaire Germa 66 — Sanji fut privé de ses modifications génétiques et rejeté par sa famille. Cet abandon forgea son humanité, le distinguant de ses frères transformés en soldats sans émotions.</p>`
+  },
+  robin: {
+    title: "Nico Robin — La Fleur du Diable",
+    stats: [["Prime", "930 000 000 B"], ["Fruit", "Hana Hana no Mi"], ["Rôle", "Archéologue unique"]],
+    art: `<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="background:#08080f;width:100%;height:200px">
+      <rect width="700" height="200" fill="#08080f"/>
+      <g opacity="0.3" fill="#6a4a8a">
+        <ellipse cx="100" cy="60" rx="20" ry="11" transform="rotate(-25,100,60)"/>
+        <ellipse cx="580" cy="50" rx="16" ry="9" transform="rotate(20,580,50)"/>
+        <ellipse cx="80" cy="160" rx="14" ry="8" transform="rotate(15,80,160)"/>
+        <ellipse cx="600" cy="155" rx="13" ry="8" transform="rotate(-15,600,155)"/>
+      </g>
+      <text x="350" y="88" text-anchor="middle" font-family="'Cinzel Decorative',serif" font-size="28" fill="#d090f0" letter-spacing="4" opacity="0.9">NICO ROBIN</text>
+      <text x="350" y="118" text-anchor="middle" font-family="'Cinzel',serif" font-size="11" fill="#9060c0" letter-spacing="4" opacity="0.7">L'ENFANT DU DIABLE · HÉRITIÈRE D'OHARA</text>
+    </svg>`,
+    content: `<p>Nico Robin est l'archéologue de l'équipage et la seule personne au monde capable de lire les Poneglyphes — des rochers indestructibles gravés dans une langue ancienne qui révèlent la véritable histoire du monde, cachée depuis 800 ans par le Gouvernement Mondial.</p>
+    <p>Enfant, elle assista impuissante à la destruction d'Ohara — son île natale — ordonnée par le Gouvernement Mondial uniquement parce que ses habitants cherchaient à connaître la vérité sur le Siècle Oublié. Elle fut déclarée criminelle à l'âge de 8 ans, avec une prime sur la tête.</p>
+    <blockquote>"Je veux vivre ! Emmenez-moi en mer avec vous !"</blockquote>
+    <p>Son fruit du démon Hana Hana no Mi lui permet de faire fleurir des répliques de ses membres sur n'importe quelle surface. Elle peut ainsi créer des centaines de mains simultanément pour saisir, frapper ou contraindre ses ennemis.</p>`
+  },
+  ace: {
+    title: "Portgas D. Ace — La Poing de Feu",
+    stats: [["Prime", "550 000 000 B"], ["Fruit", "Mera Mera no Mi"], ["Division", "2e — Barbe Blanche"]],
+    art: `<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="background:#100604;width:100%;height:200px">
+      <rect width="700" height="200" fill="#100604"/>
+      <g opacity="0.3">
+        <path d="M120 200 Q110 160 130 135 Q122 162 142 148 Q138 172 120 200Z" fill="#e86020"/>
+        <path d="M560 200 Q555 160 575 135 Q567 162 587 148 Q582 172 560 200Z" fill="#e86020"/>
+        <path d="M300 200 Q292 155 312 128 Q304 158 324 142 Q318 168 300 200Z" fill="#e87030"/>
+        <path d="M400 200 Q393 155 413 128 Q405 158 425 142 Q419 168 400 200Z" fill="#e87030"/>
+      </g>
+      <text x="350" y="88" text-anchor="middle" font-family="'Cinzel Decorative',serif" font-size="22" fill="#f08040" letter-spacing="4" opacity="0.9">PORTGAS D. ACE</text>
+      <text x="350" y="116" text-anchor="middle" font-family="'Cinzel',serif" font-size="11" fill="#c96020" letter-spacing="4" opacity="0.7">LA POING DE FEU · FILS DU ROI DES PIRATES</text>
+    </svg>`,
+    content: `<p>Portgas D. Ace est le fils biologique de Gol D. Roger, le Roi des Pirates, et de Portgas D. Rouge, qui retarda sa naissance pendant vingt mois pour le protéger de la Marine. Frère adoptif de Luffy et Sabo sous la tutelle de Curly Dadan, il devint l'un des commandants les plus redoutés de la flotte de Barbe Blanche.</p>
+    <p>Son fruit Mera Mera no Mi (Flamme-Flamme) lui conférait la capacité de transformer son corps en feu pur et de le contrôler à volonté. Son attaque signature, "Hiken" (Poing de Feu), pouvait traverser des navires entiers.</p>
+    <blockquote>"Peu importe le genre de vie que j'ai mené, je suis né du désir d'amour de mes parents. Ça, je ne l'échangerai contre rien."</blockquote>
+    <p>Sa mort à Marineford — s'interposant devant l'Amiral Akainu pour sauver Luffy — reste l'un des moments les plus douloureux de la saga. Son sacrifice marqua la fin de la première moitié de One Piece et déclencha la Time Skip.</p>`
+  },
+  shanks: {
+    title: "Shanks le Roux — L'Équilibre du Monde",
+    stats: [["Prime", "4 048 900 000 B"], ["Statut", "Yonko"], ["Haki", "Roi souverain"]],
+    art: `<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="background:#0a0612;width:100%;height:200px">
+      <rect width="700" height="200" fill="#0a0612"/>
+      <g stroke="#4a0a8a" stroke-width="0.8" opacity="0.3" fill="none">
+        <path d="M100 80 Q180 50 260 90"/>
+        <path d="M440 60 Q520 30 600 70"/>
+        <path d="M150 150 Q230 120 310 160"/>
+        <path d="M390 140 Q470 110 550 150"/>
+      </g>
+      <text x="350" y="85" text-anchor="middle" font-family="'Cinzel Decorative',serif" font-size="24" fill="#f06060" letter-spacing="4" opacity="0.9">SHANKS LE ROUX</text>
+      <text x="350" y="115" text-anchor="middle" font-family="'Cinzel',serif" font-size="11" fill="#c03030" letter-spacing="4" opacity="0.7">YONKO · CAPITAINE DES ROUX · ANCIEN APPRENTI DE ROGER</text>
+    </svg>`,
+    content: `<p>Shanks est l'un des quatre Empereurs des Mers (Yonko) et capitaine de l'équipage des Pirates Roux. Avant sa carrière indépendante, il fut apprenti sur le navire de Gol D. Roger — le Oro Jackson — aux côtés de Buggy le Clown.</p>
+    <p>Il perdit son bras gauche en sauvant un jeune Monkey D. Luffy d'un roi des mers, lui laissant son chapeau de paille en gage — le chapeau que Luffy porte depuis lors. Sa rencontre avec Luffy fut le déclencheur du rêve de ce dernier de devenir pirate.</p>
+    <blockquote>"Mon bras ? Je l'ai échangé contre quelque chose d'immense."</blockquote>
+    <p>Son Haki des Rois est d'une puissance si absolue qu'il peut l'exercer inconsciemment sur des milliers de personnes simultanément. À Marineford, son simple arrivée mit fin à la guerre — une démonstration de son influence politique et de sa force pure sans aucun affrontement direct.</p>
+    <p>Ses motivations réelles restent l'un des plus grands mystères de l'oeuvre : il semble jouer son propre jeu, ni pleinement du côté des pirates ni contre le Gouvernement Mondial.</p>`
+  }
+};
+
+function openModal(id) {
+  const c = characters[id];
+  if (!c) return;
+  document.getElementById('modal-title').textContent = c.title;
+  document.getElementById('modal-art').innerHTML = c.art;
+
+  let statsHtml = `<div class="modal-stats">`;
+  c.stats.forEach(([label, val]) => {
+    statsHtml += `<div class="modal-stat"><div class="modal-stat-label">${label}</div><div class="modal-stat-val">${val}</div></div>`;
+  });
+  statsHtml += `</div>`;
+
+  document.getElementById('modal-body').innerHTML = statsHtml + c.content;
+  document.getElementById('modal-bg').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modal-bg')) return;
+  document.getElementById('modal-bg').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal({target: document.getElementById('modal-bg')});
+});
+</script>
+
+</body>
+</html>
