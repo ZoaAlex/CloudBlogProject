@@ -57,42 +57,35 @@ jobs:
         echo -n "${{ secrets.EC2_SSH_PRIVATE_KEY }}" | wc -c
         echo "Premières lignes:"
         echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" | head -3    
-     # Copie uniquement le docker-compose.yml sur l'instance
+
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+        chmod 600 ~/.ssh/deploy_key
+        ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
     - name: Copy docker-compose to EC2
-      uses: appleboy/scp-action@v0.1.7
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: root
-        key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-        source: "docker-compose.yml"
-        target: "/home/root/"
-       
-  
+      run: |
+        scp -i ~/.ssh/deploy_key \
+          -o StrictHostKeyChecking=no \
+          docker-compose.yml \
+          root@${{ secrets.EC2_HOST }}:/home/root/
 
-    
     - name: Deploy on EC2
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: root
-        key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-        command_timeout: 5m
-        envs: ECR_REGISTRY,ECR_REPOSITORY,AWS_REGION,IMAGE_TAG,MYSQL_DATABASE,MYSQL_USER,MYSQL_PASSWORD,MYSQL_ROOT_PASSWORD,GHOST_URL
-        script: |
-          # Recrée le .env
-          cat > /home/root/.env << EOF
-          MYSQL_DATABASE=$MYSQL_DATABASE
-          MYSQL_USER=$MYSQL_USER
-          MYSQL_PASSWORD=$MYSQL_PASSWORD
-          MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
-          GHOST_URL=$GHOST_URL
-          EOF
-
-          # Authentification ECR
-          aws ecr get-login-password --region $AWS_REGION | \
-            docker login --username AWS --password-stdin $ECR_REGISTRY
-
-          # Pull et redémarrage
-          docker pull $ECR_REGISTRY/$ECR_REPOSITORY:latest
+      run: |
+        ssh -i ~/.ssh/deploy_key \
+            -o StrictHostKeyChecking=no \
+            root@${{ secrets.EC2_HOST }} << 'EOF'
+          cat > /home/root/.env << ENVEOF
+          MYSQL_DATABASE=${{ env.MYSQL_DATABASE }}
+          MYSQL_USER=${{ env.MYSQL_USER }}
+          MYSQL_PASSWORD=${{ env.MYSQL_PASSWORD }}
+          MYSQL_ROOT_PASSWORD=${{ env.MYSQL_ROOT_PASSWORD }}
+          ENVEOF
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | \
+            docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY_NAME }}
+          docker pull ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
           docker compose down
           docker compose up -d
+        EOF
