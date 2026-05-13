@@ -75,20 +75,29 @@ jobs:
             ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
 
     - name: Deploy on EC2
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
         ssh -i ~/.ssh/deploy_key \
             -o StrictHostKeyChecking=no \
-            ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
-          cat > /home/ec2-user/.env << ENVEOF
-          MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}
-          MYSQL_USER=${{ secrets.MYSQL_USER }}
-          MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
-          MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}
-          GHOST_URL=${{ secrets.GHOST_URL }}
-          ENVEOF
-          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | \
-            docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
-          docker pull ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
-          docker compose down
-          docker compose up -d
-        EOF
+            ec2-user@${{ secrets.EC2_HOST }} \
+            'bash -s' << 'ENDSSH'
+              # Recrée le .env
+              cat > /home/ec2-user/.env << 'ENDENV'
+        MYSQL_DATABASE=${{ vars.MYSQL_DATABASE }}
+        MYSQL_USER=${{ vars.MYSQL_USER }}
+        MYSQL_PASSWORD=${{ vars.MYSQL_PASSWORD }}
+        MYSQL_ROOT_PASSWORD=${{ vars.MYSQL_ROOT_PASSWORD }}
+        MYSQL_USERNAME=${{ vars.GHOST_USERNAME }}
+        MYSQL_PASSWORD=${{ vars.GHOST_PASSWORD }}
+        ENDENV
+
+              # Authentification ECR
+              aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | \
+                docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
+
+              # Pull et redémarrage
+              docker pull ${{ env.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
+              cd /home/ec2-user && docker compose down
+              cd /home/ec2-user && docker compose up -d
+        ENDSSH
