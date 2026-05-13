@@ -65,7 +65,7 @@ jobs:
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.EC2_HOST }}
-        username: ec2-user
+        username: root
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         command_timeout: 5m
         envs: ECR_REGISTRY,ECR_REPOSITORY,AWS_REGION,IMAGE_TAG,MYSQL_DATABASE,MYSQL_USER,MYSQL_PASSWORD,MYSQL_ROOT_PASSWORD,GHOST_URL
