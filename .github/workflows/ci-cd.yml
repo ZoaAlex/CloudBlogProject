@@ -51,7 +51,7 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
-    - name: Setup SSH key
+    - name: test SSH key
       run: |
         mkdir -p ~/.ssh
         printf '%s' "${{ secrets.EC2_SSH_PRIVATE_KEY }}" | base64 -d > ~/.ssh/github-actions-key
@@ -66,7 +66,7 @@ jobs:
       with:
         host: ${{ secrets.EC2_HOST }}
         username: root
-        key_path: /home/runner/.ssh/github-actions-key
+        key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         source: "docker-compose.yml"
         target: "/home/root/"
 
@@ -76,7 +76,7 @@ jobs:
       with:
         host: ${{ secrets.EC2_HOST }}
         username: root
-        key_path: /home/runner/.ssh/github-actions-key
+        key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         command_timeout: 5m
         envs: ECR_REGISTRY,ECR_REPOSITORY,AWS_REGION,IMAGE_TAG,MYSQL_DATABASE,MYSQL_USER,MYSQL_PASSWORD,MYSQL_ROOT_PASSWORD,GHOST_URL
         script: |
