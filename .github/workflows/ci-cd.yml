@@ -61,7 +61,7 @@ jobs:
     - name: Setup SSH
       run: |
         mkdir -p ~/.ssh
-        echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+        printf '%s\n' "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
         chmod 600 ~/.ssh/deploy_key
         ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
@@ -70,14 +70,14 @@ jobs:
         scp -i ~/.ssh/deploy_key \
           -o StrictHostKeyChecking=no \
           docker-compose.yml \
-          root@${{ secrets.EC2_HOST }}:/home/root/
+          ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
 
     - name: Deploy on EC2
       run: |
         ssh -i ~/.ssh/deploy_key \
             -o StrictHostKeyChecking=no \
-            root@${{ secrets.EC2_HOST }} << 'EOF'
-          cat > /home/root/.env << ENVEOF
+            ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+          cat > /home/ec2-user/.env << ENVEOF
           MYSQL_DATABASE=${{ env.MYSQL_DATABASE }}
           MYSQL_USER=${{ env.MYSQL_USER }}
           MYSQL_PASSWORD=${{ env.MYSQL_PASSWORD }}
