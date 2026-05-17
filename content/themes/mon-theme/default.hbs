@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{meta_title}}</title>
+  {{ghost_head}}
+</head>
+<body class="{{body_class}}">
+
+<nav style="background:#0a1520;padding:0.75rem 2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(201,146,42,0.2)">
+  <a href="{{@site.url}}" style="font-family:serif;color:#f5d98a;text-decoration:none;font-size:1.1rem">{{@site.title}}</a>
+  <ul style="display:flex;gap:1.5rem;list-style:none;margin:0;padding:0">
+    {{#foreach navigation}}
+      <li><a href="{{url}}" style="color:#d9cbb0;text-decoration:none;font-size:0.85rem">{{label}}</a></li>
+    {{/foreach}}
+  </ul>
+</nav>
+
+{{{body}}}
+
+<footer style="background:#0a1520;border-top:1px solid rgba(201,146,42,0.15);padding:2rem;text-align:center;color:#d9cbb0;font-size:0.85rem">
+  <p style="color:#f5d98a;font-size:1rem;margin-bottom:0.5rem">{{@site.title}}</p>
+  <p>{{@site.description}}</p>
+  <p style="margin-top:1rem;opacity:0.4">© {{date format="YYYY"}} {{@site.title}}</p>
+</footer>
+
+{{ghost_foot}}
+</body>
+</html>

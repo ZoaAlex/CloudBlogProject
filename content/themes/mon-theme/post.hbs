@@ -1,0 +1,12 @@
+{{!< default}}
+
+<main style="max-width:800px;margin:0 auto;padding:3rem 2rem;background:#0d1b2a;min-height:80vh">
+  {{#post}}
+    <h1 style="font-family:serif;color:#f5d98a;font-size:2rem;margin-bottom:1rem">{{title}}</h1>
+    <p style="color:rgba(201,146,42,0.6);font-size:0.8rem;margin-bottom:2rem">{{date format="D MMMM YYYY"}} · {{reading_time}}</p>
+    {{#if feature_image}}
+      <img src="{{feature_image}}" alt="{{title}}" style="width:100%;border-radius:4px;margin-bottom:2rem">
+    {{/if}}
+    <div class="gh-content" style="color:#d9cbb0;line-height:1.8;font-size:1rem">{{content}}</div>
+  {{/post}}
+</main>
