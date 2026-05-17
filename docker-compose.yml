@@ -1,8 +1,8 @@
 
 
 services:
-  blog:                   
-    image: ${ECR_REGISTRY}/${ECR_REPOSITORY}:latest 
+  blog:
+    image: ${GHOST_IMAGE:-ghost:5-alpine}
     container_name: ghost_app
     restart: always
     ports:
